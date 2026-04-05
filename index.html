@@ -19,7 +19,7 @@
     }
   ]
 }">
-<title>Padel Village v2.3</title>
+<title>Padel Village v2.6</title>
 <style>
   :root {
     --green: #1a7a4a;
@@ -458,136 +458,118 @@
     padding: 8px 14px;
   }
 
-  /* Filtri rapidi */
-  .filter-chips {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .filter-chips::-webkit-scrollbar { height: 2px; }
-  .filter-chips::-webkit-scrollbar-thumb { background: var(--border); border-radius: 1px; }
-  .filter-chip {
-    padding: 6px 12px;
-    font-size: 12px;
-    background: var(--surface);
-    color: var(--text);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-    font-weight: normal;
-    letter-spacing: 0;
-    text-transform: none;
-  }
-  .filter-chip:hover {
-    background: var(--surface2);
-    border-color: var(--green);
-  }
-  .filter-chip.active {
-    background: var(--green-light);
-    color: var(--green-dark);
-    border-color: var(--green);
-    font-weight: bold;
-  }
-
-  /* Card giorni */
+  /* ── CALENDARIO SETTIMANALE A GRIGLIA ── */
   .calendar-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .cal-day {
     background: var(--surface);
-    border: 0.5px solid var(--border);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .cal-day-header {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-mid);
-    padding: 12px;
-    border-bottom: 0.5px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .cal-day-header:hover {
-    background: var(--surface2);
-  }
-  .cal-day-header .day-title {
-    flex: 1;
-  }
-  .cal-day-header .day-count {
-    font-size: 11px;
-    color: var(--text-light);
-    margin-right: 8px;
-  }
-  .cal-day-header .expand-icon {
-    font-size: 18px;
-    color: var(--text-light);
-    transition: transform 0.2s;
-  }
-  .cal-day.expanded .expand-icon {
-    transform: rotate(180deg);
-  }
-
-  /* Slot chips */
-  .cal-slots {
-    display: none;
-    padding: 12px;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .cal-day.expanded .cal-slots {
-    display: flex;
-  }
-  .slot-chip {
-    padding: 8px 12px;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 0.5px solid;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  /* Slot libero */
-  .slot-chip.libero {
-    background: var(--green-light);
-    color: var(--green-dark);
-    border-color: var(--green);
-  }
-  .slot-chip.libero:hover {
-    background: var(--green);
-    color: #fff;
+    overflow-x: auto;
     box-shadow: var(--shadow);
   }
-  /* Slot occupato */
-  .slot-chip.occupato {
+  
+  .cal-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  
+  .cal-table th {
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px 8px;
+    border: 0.5px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .cal-table th.time-col {
+    background: var(--surface2);
+    color: var(--text-mid);
+    min-width: 60px;
+  }
+  
+  .cal-table td {
+    border: 0.5px solid var(--border);
+    padding: 0;
+    height: 50px;
+    min-height: 50px;
+    vertical-align: top;
+    text-align: center;
+    position: relative;
+  }
+  
+  .cal-table td.time-cell {
+    background: var(--surface2);
+    color: var(--text-mid);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 4px;
+    vertical-align: middle;
+  }
+  
+  .cal-slot {
+    width: 100%;
+    height: 100%;
+    min-height: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+  }
+  
+  .cal-slot.libero {
+    background: var(--green-light);
+    border: 1px dashed var(--green);
+  }
+  
+  .cal-slot.libero:hover {
+    background: var(--green);
+    border-color: var(--green-dark);
+    box-shadow: inset 0 0 0 2px var(--green-dark);
+  }
+  
+  .cal-slot.libero:hover::after {
+    content: '+';
+    position: absolute;
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .cal-slot.occupato {
     background: var(--danger-light);
-    color: var(--danger);
-    border-color: var(--danger);
-    opacity: 0.7;
+    border: 1px solid var(--danger);
     cursor: default;
   }
-  /* Slot tua lezione */
-  .slot-chip.mia {
-    background: #e6f1fb;
-    color: #0c447c;
-    border-color: #378add;
+  
+  .cal-slot.occupato:hover {
+    background: var(--danger);
   }
-  .slot-chip .slot-label {
-    display: block;
+  
+  .cal-slot-info {
     font-size: 10px;
-    opacity: 0.8;
-    margin-top: 2px;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
+    padding: 2px;
+  }
+  
+  .cal-slot.occupato .cal-slot-info {
+    color: var(--danger);
+    font-weight: 600;
+  }
+  
+  .cal-slot.occupato:hover .cal-slot-info {
+    color: #fff;
   }
 
   /* ── KPI DASHBOARD ── */
@@ -794,7 +776,7 @@
   <!-- ══════════════════════════════════════════════════════════════════════ -->
   <div id="screen-calendario" class="screen">
     <h1 class="page-title">Prenota</h1>
-    <p class="page-sub">Vista settimanale con card giornaliere</p>
+    <p class="page-sub">Calendario settimanale - Campo 1</p>
 
     <div class="week-nav">
       <button class="btn btn-secondary" onclick="prevWeek()">← Prec</button>
@@ -806,14 +788,7 @@
       + Nuova prenotazione
     </button>
 
-    <!-- Filtri rapidi -->
-    <div class="filter-chips">
-      <button class="filter-chip active" onclick="setFilter('tutti')">Tutti</button>
-      <button class="filter-chip" onclick="setFilter('liberi')">Solo liberi</button>
-      <button class="filter-chip" onclick="setFilter('occupati')">Occupati</button>
-    </div>
-
-    <div class="calendar-grid" id="calendar-grid"></div>
+    <div id="calendar-grid"></div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════ -->
@@ -1694,6 +1669,21 @@ function savePrenotazione() {
   toast('✅ Prenotazione salvata!');
 }
 
+function viewBooking(bookingId) {
+  const booking = prenotazioni.find(b => b.id === bookingId);
+  if (!booking) return;
+  
+  const activity = ACTIVITIES.find(a => a.key === booking.attivita);
+  const partStr = booking.partecipanti.map(p => {
+    const c = clienti.find(cl => cl.id === p.clienteId);
+    return c ? `${c.nome} ${c.cognome}` : '?';
+  }).join(', ');
+  
+  if (confirm(`Prenotazione:\nCampo ${booking.campo}\n${activity?.label}\n${booking.ora} - ${booking.oraFine}\nPartecipanti: ${partStr}\n\nEliminare questa prenotazione?`)) {
+    deletePrenotazione(booking.id);
+  }
+}
+
 function deletePrenotazione(bookingId) {
   if (!confirm('Eliminare questa prenotazione?')) return;
   
@@ -1857,30 +1847,6 @@ function selectPktCliente(clienteId, nome, cognome) {
 // CALENDARIO - LAYOUT 3: CARD GIORNALIERE
 // ═══════════════════════════════════════════
 
-let activeFilter = 'tutti';
-
-function setFilter(filter) {
-  activeFilter = filter;
-  
-  // Aggiorna UI filtri
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.classList.remove('active');
-  });
-  event.target.classList.add('active');
-  
-  renderCalendar();
-}
-
-function matchesFilter(dayISO, ora) {
-  // Controlla se uno slot matcha il filtro attivo
-  
-  // Filtro disponibilità - controlla se almeno UN campo è occupato in questo orario
-  const occupato = [1, 2, 3, 4].some(campo => isSlotOccupato(dayISO, ora, campo));
-  if (activeFilter === 'liberi' && occupato) return false;
-  if (activeFilter === 'occupati' && !occupato) return false;
-  
-  return true;
-}
 
 function getSlotBooking(dayISO, ora, campo = null) {
   // Trova la prenotazione che occupa questo slot
@@ -1906,138 +1872,67 @@ function renderCalendar() {
     `${formatDateIT(currentWeekStart)} – ${formatDateIT(weekEnd)}`;
   
   const grid = document.getElementById('calendar-grid');
-  grid.innerHTML = '';
   
-  // Solo 6 giorni: lunedì-sabato (no domenica)
+  // Crea la tabella
+  let html = '<table class="cal-table"><thead><tr>';
+  html += '<th class="time-col">Ora</th>';
+  
+  // Header giorni (lunedì-sabato)
   for (let i = 0; i < 6; i++) {
     const day = new Date(currentWeekStart);
     day.setDate(day.getDate() + i);
-    const dayISO = formatDateISO(day);
+    html += `<th>${DAYS[i]}<br>${formatDateIT(day)}</th>`;
+  }
+  
+  html += '</tr></thead><tbody>';
+  
+  // Righe per ogni slot orario
+  HOURS.forEach(ora => {
+    html += `<tr><td class="time-cell">${ora}</td>`;
     
-    // Crea card giorno
-    const dayCard = document.createElement('div');
-    dayCard.className = 'cal-day';
-    
-    // Header card (cliccabile per espandere/chiudere)
-    const header = document.createElement('div');
-    header.className = 'cal-day-header';
-    
-    // Conta slot disponibili per questo giorno
-    let slotsDisponibili = 0;
-    HOURS.forEach(ora => {
-      // Uno slot è disponibile se almeno UN campo è libero E matcha il filtro
-      const almenoUnCampoLibero = [1, 2, 3, 4].some(campo => !isSlotOccupato(dayISO, ora, campo));
-      if (almenoUnCampoLibero && matchesFilter(dayISO, ora)) {
-        slotsDisponibili++;
-      }
-    });
-    
-    header.innerHTML = `
-      <div class="day-title">${DAYS[i]} ${formatDateIT(day)}</div>
-      <div class="day-count">${slotsDisponibili} slot disponibili</div>
-      <div class="expand-icon">▼</div>
-    `;
-    
-    header.onclick = () => {
-      dayCard.classList.toggle('expanded');
-      haptic(20);
-    };
-    
-    dayCard.appendChild(header);
-    
-    // Slots chips container
-    const slotsDiv = document.createElement('div');
-    slotsDiv.className = 'cal-slots';
-    
-    // Genera chips per questo giorno
-    let i_slot = 0;
-    while (i_slot < HOURS.length) {
-      const ora = HOURS[i_slot];
+    // Colonne per ogni giorno
+    for (let i = 0; i < 6; i++) {
+      const day = new Date(currentWeekStart);
+      day.setDate(day.getDate() + i);
+      const dayISO = formatDateISO(day);
       
-      // Salta se non matcha il filtro
-      if (!matchesFilter(dayISO, ora)) {
-        i_slot++;
-        continue;
-      }
-      
-      const booking = getSlotBooking(dayISO, ora); // cerca su tutti i campi
+      // Verifica se lo slot è occupato
+      const booking = prenotazioni.find(b => {
+        if (b.data !== dayISO || b.campo !== '1') return false;
+        const slots = getSlotsBetween(b.ora, b.oraFine);
+        return slots.includes(ora);
+      });
       
       if (booking) {
-        // SLOT OCCUPATO - crea chip largo per tutta la durata
-        const slotsOccupati = getSlotsBetween(booking.ora, booking.oraFine);
-        const isInizio = slotsOccupati[0] === ora;
+        // Slot occupato
+        const activity = ACTIVITIES.find(a => a.key === booking.attivita);
+        const clienteId = booking.partecipanti[0]?.clienteId;
+        const cliente = clienti.find(c => c.id === clienteId);
+        const nomeCliente = cliente ? `${cliente.nome.charAt(0)}.${cliente.cognome.charAt(0)}.` : '?';
+        
+        // Verifica se è l'inizio della prenotazione
+        const slots = getSlotsBetween(booking.ora, booking.oraFine);
+        const isInizio = slots[0] === ora;
         
         if (isInizio) {
-          // Crea chip largo
-          const chip = document.createElement('div');
-          const activity = ACTIVITIES.find(a => a.key === booking.attivita);
-          const clienteId = booking.partecipanti[0]?.clienteId;
-          const cliente = clienti.find(c => c.id === clienteId);
-          const nomeCliente = cliente ? `${cliente.nome.charAt(0)}.${cliente.cognome.charAt(0)}.` : '?';
-          
-          // TODO: verificare se è "tua lezione" basandosi su utente loggato
-          const isMia = false; // per ora sempre false
-          
-          chip.className = `slot-chip ${isMia ? 'mia' : 'occupato'}`;
-          chip.innerHTML = `
-            ${booking.ora}─${booking.oraFine}
-            <span class="slot-label">${nomeCliente} • ${activity?.label || booking.attivita}</span>
-          `;
-          
-          chip.onclick = () => {
-            if (confirm('Visualizzare dettagli prenotazione?')) {
-              const partStr = booking.partecipanti.map(p => {
-                const c = clienti.find(cl => cl.id === p.clienteId);
-                return c ? `${c.nome} ${c.cognome}` : '?';
-              }).join(', ');
-              
-              alert(`Prenotazione:\n${activity?.label}\n${booking.ora} - ${booking.oraFine}\nPartecipanti: ${partStr}`);
-              
-              if (confirm('Eliminare questa prenotazione?')) {
-                deletePrenotazione(booking.id);
-              }
-            }
-          };
-          
-          slotsDiv.appendChild(chip);
+          const durata = slots.length;
+          html += `<td rowspan="${durata}">`;
+          html += `<div class="cal-slot occupato" onclick="viewBooking('${booking.id}')">`;
+          html += `<div class="cal-slot-info">${booking.ora}-${booking.oraFine}<br>${nomeCliente}<br>${activity?.label || booking.attivita}</div>`;
+          html += `</div></td>`;
         }
-        
-        // Salta tutti gli slot occupati da questa prenotazione
-        i_slot += slotsOccupati.length;
-        
+        // Se non è l'inizio, il rowspan del td precedente copre questa cella
       } else {
-        // SLOT LIBERO - verifica se ci sono più slot liberi consecutivi
-        let slotLiberiConsecutivi = 1;
-        while (
-          i_slot + slotLiberiConsecutivi < HOURS.length &&
-          !isSlotOccupato(dayISO, HOURS[i_slot + slotLiberiConsecutivi], 1) &&
-          matchesFilter(dayISO, HOURS[i_slot + slotLiberiConsecutivi])
-        ) {
-          slotLiberiConsecutivi++;
-        }
-        
-        // Crea chip (singolo o doppio)
-        const chip = document.createElement('div');
-        chip.className = 'slot-chip libero';
-        
-        if (slotLiberiConsecutivi >= 2) {
-          const oraFine = HOURS[i_slot + slotLiberiConsecutivi - 1];
-          const oraFineNext = addMinutesToTime(oraFine, 30);
-          chip.textContent = `${ora}─${oraFineNext}`;
-        } else {
-          chip.textContent = ora;
-        }
-        
-        chip.onclick = () => openModalPrenotazione(dayISO, ora, 1);
-        
-        slotsDiv.appendChild(chip);
-        i_slot += slotLiberiConsecutivi;
+        // Slot libero
+        html += `<td><div class="cal-slot libero" onclick="openModalPrenotazione('${dayISO}', '${ora}', 1)"></div></td>`;
       }
     }
     
-    dayCard.appendChild(slotsDiv);
-    grid.appendChild(dayCard);
-  }
+    html += '</tr>';
+  });
+  
+  html += '</tbody></table>';
+  grid.innerHTML = html;
 }
 
 function prevWeek() {
