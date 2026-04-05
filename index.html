@@ -905,15 +905,6 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>Campo</label>
-          <select id="booking-campo">
-            <option value="1">Campo 1</option>
-            <option value="2">Campo 2</option>
-            <option value="3">Campo 3</option>
-            <option value="4">Campo 4</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label>Attività</label>
           <select id="booking-attivita" onchange="updateBookingDuration()">
             <option value="singola">Lezione singola (60')</option>
@@ -995,8 +986,8 @@ const ACTIVITIES = [
 ];
 
 const HOURS = generateTimeSlots(); // genera slot da 30'
-const CAMPI = [1, 2, 3, 4];
-const DAYS = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
+const CAMPI = [1]; // Un solo campo
+const DAYS = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato']; // No domenica
 
 let config = JSON.parse(localStorage.getItem('pv_config') || '{}');
 if (!config.tariffe) {
@@ -1025,9 +1016,9 @@ let selectedPktCliente = null;
 // ═══════════════════════════════════════════
 
 function generateTimeSlots() {
-  // Genera slot ogni 30 minuti da 09:00 a 23:30
+  // Genera slot ogni 30 minuti da 07:00 a 23:30
   const slots = [];
-  for (let h = 9; h < 24; h++) {
+  for (let h = 7; h < 24; h++) {
     slots.push(`${String(h).padStart(2, '0')}:00`);
     if (h < 23) slots.push(`${String(h).padStart(2, '0')}:30`);
   }
@@ -1310,7 +1301,7 @@ function openModalPrenotazione(data = null, ora = null, campo = null) {
   selectOra.innerHTML = HOURS.map(h => `<option value="${h}">${h}</option>`).join('');
   selectOra.value = ora || HOURS[0];
   
-  document.getElementById('booking-campo').value = campo || '1';
+  // Campo sempre 1 (un solo campo disponibile)
   document.getElementById('booking-attivita').value = 'singola';
   
   updateBookingDuration();
@@ -1451,7 +1442,7 @@ function selectCliente(partId, clienteId, nome, cognome) {
 function savePrenotazione() {
   const data = document.getElementById('booking-data').value;
   const oraInizio = document.getElementById('booking-ora').value;
-  const campo = document.getElementById('booking-campo').value;
+  const campo = '1'; // Un solo campo disponibile
   const attivita = document.getElementById('booking-attivita').value;
   const oraFine = document.getElementById('booking-ora-fine').value;
   
@@ -1732,7 +1723,7 @@ function renderCalendar() {
   }
   
   const weekEnd = new Date(currentWeekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setDate(weekEnd.getDate() + 5); // Sabato (lunedì + 5 giorni)
   
   document.getElementById('week-label').textContent = 
     `${formatDateIT(currentWeekStart)} – ${formatDateIT(weekEnd)}`;
@@ -1740,7 +1731,8 @@ function renderCalendar() {
   const grid = document.getElementById('calendar-grid');
   grid.innerHTML = '';
   
-  for (let i = 0; i < 7; i++) {
+  // Solo 6 giorni: lunedì-sabato (no domenica)
+  for (let i = 0; i < 6; i++) {
     const day = new Date(currentWeekStart);
     day.setDate(day.getDate() + i);
     const dayISO = formatDateISO(day);
@@ -1773,7 +1765,7 @@ function renderCalendar() {
           if (booking) {
             const act = ACTIVITIES.find(a => a.key === booking.attivita);
             slot.innerHTML = `
-              <span class="slot-time">C${campo} ${ora}</span>
+              <span class="slot-time">${ora}</span>
               <span class="slot-info">${act?.label || booking.attivita}</span>
             `;
             slot.onclick = () => {
@@ -1786,7 +1778,7 @@ function renderCalendar() {
             };
           }
         } else {
-          slot.innerHTML = `<span class="slot-time">C${campo} ${ora}</span>`;
+          slot.innerHTML = `<span class="slot-time">${ora}</span>`;
           slot.onclick = () => openModalPrenotazione(dayISO, ora, campo);
         }
         
@@ -1906,7 +1898,7 @@ function renderReport() {
   }
   
   const weekEnd = new Date(reportWeekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setDate(weekEnd.getDate() + 5); // Sabato (lunedì + 5 giorni)
   
   document.getElementById('week-label-report').textContent = 
     `${formatDateIT(reportWeekStart)} – ${formatDateIT(weekEnd)}`;
@@ -2021,7 +2013,7 @@ function nextWeekReport() {
 
 function exportReport() {
   const weekEnd = new Date(reportWeekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setDate(weekEnd.getDate() + 5); // Sabato (lunedì + 5 giorni)
   
   const weekBookings = prenotazioni.filter(b => {
     const d = parseDate(b.data);
