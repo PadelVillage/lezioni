@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Padel Village</title>
+<style>
+  :root {
+    --green: #1a7a4a;
+    --green-dark: #115233;
+    --green-light: #e8f5ee;
+    --green-mid: #2d9e60;
+    --accent: #f0c040;
+    --accent-dark: #c99d10;
+    --bg: #f4f7f5;
+    --surface: #ffffff;
+    --surface2: #f0f4f2;
+    --border: #d0ddd6;
+    --text: #1a2820;
+    --text-mid: #4a6458;
+    --text-light: #7a9488;
+    --danger: #c0392b;
+    --danger-light: #fdf0ee;
+    --warning: #e67e22;
+    --warning-light: #fef5e7;
+    --shadow: 0 2px 8px rgba(26,120,74,0.10);
+    --shadow-lg: 0 8px 32px rgba(26,120,74,0.16);
+    --radius: 10px;
+    --radius-sm: 6px;
+    /* activity colors */
+    --singola: #3498db;
+    --doppia: #27ae60;
+    --allenamento: #e67e22;
+    --tattica: #e74c3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--green-dark);
+    color: #fff;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    font-weight: normal;
+    margin-left: 2px;
+  }
+
+  /* ── NAV TAB ── */
+  nav {
+    background: var(--green);
+    display: flex;
+    overflow-x: auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* ── MAIN ── */
+  main { flex: 1; padding: 28px 24px; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    font-size: 24px;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-weight: bold;
+    letter-spacing: -0.02em;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 12px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .form-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-mid);
+    font-weight: bold;
+  }
+  input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], select {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(26,120,74,0.10);
+    background: #fff;
+  }
+  input[readonly] {
+    background: var(--green-light);
+    color: var(--green-dark);
+    border-color: #b8d9c8;
+    font-weight: bold;
+  }
+  select {
+    cursor: pointer;
+  }
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--green);
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn-accent {
+    background: var(--accent);
+    color: var(--text);
+  }
+  .btn-accent:hover { background: var(--accent-dark); color: #fff; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid #e8c0bc;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  .btn-danger:hover { background: var(--danger-light); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-icon { padding: 6px 10px; font-size: 15px; line-height: 1; }
+
+  /* ── SEARCH BAR ── */
+  .search-bar {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .search-bar input {
+    padding-left: 36px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr {
+    background: var(--green-dark);
+    color: #fff;
+  }
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: bold;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover {
+    background: var(--green-light);
+  }
+  tbody td {
+    padding: 12px 14px;
+  }
+  .empty-row td {
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+    padding: 32px 14px;
+  }
+  .td-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-green { background: var(--green-light); color: var(--green-dark); }
+  .badge-blue { background: #d4e9f7; color: #1565c0; }
+  .badge-orange { background: #ffe8d4; color: #d84315; }
+  .badge-red { background: var(--danger-light); color: var(--danger); }
+  .badge-yellow { background: var(--warning-light); color: var(--warning); }
+
+  /* ── MODAL ── */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.50);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal.open { display: flex; }
+  .modal-content {
+    background: var(--surface);
+    border-radius: var(--radius);
+    max-width: 620px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--green-dark);
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-mid);
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-body {
+    padding: 24px;
+  }
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green-dark);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 300;
+    display: none;
+    animation: toastIn 0.25s ease;
+  }
+  #toast.error { background: var(--danger); }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CALENDAR GRID ── */
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .calendar-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .week-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .cal-header-cell {
+    background: var(--green-dark);
+    color: #fff;
+    text-align: center;
+    padding: 10px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .cal-time-cell {
+    background: var(--surface2);
+    padding: 8px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-mid);
+    text-align: center;
+  }
+  .cal-slot {
+    background: var(--surface);
+    padding: 6px;
+    min-height: 60px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .cal-slot:hover { background: var(--green-light); }
+  .cal-booking {
+    background: var(--green);
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid var(--green-dark);
+  }
+  .cal-booking:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .cal-booking-singola { background: var(--singola); border-left-color: #1976d2; }
+  .cal-booking-doppia { background: var(--doppia); border-left-color: #1e8449; }
+  .cal-booking-allenamento { background: var(--allenamento); border-left-color: #d35400; }
+  .cal-booking-tattica { background: var(--tattica); border-left-color: #c0392b; }
+
+  /* ── AUTOCOMPLETE ── */
+  .autocomplete-wrap {
+    position: relative;
+  }
+  .autocomplete-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    margin-top: 2px;
+  }
+  .autocomplete-results.show { display: block; }
+  .autocomplete-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover {
+    background: var(--green-light);
+  }
+  .autocomplete-item strong {
+    color: var(--green-dark);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    background: var(--green);
+    height: 100%;
+    transition: width 0.3s;
+  }
+
+  /* ── DASHBOARD STYLES ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mid);
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--green-dark);
+  }
+  .kpi-card.danger .kpi-value {
+    color: var(--danger);
+  }
+
+  .today-box {
+    background: var(--green-light);
+    border: 2px solid var(--green);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .today-box-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+  }
+  .today-slot {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--green);
+  }
+  .today-slot:last-child { margin-bottom: 0; }
+  .today-slot-time {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+  .today-slot-activity {
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+  }
+  .today-slot-participants {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .mix-bar {
+    margin-bottom: 16px;
+  }
+  .mix-bar-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .mix-bar-track {
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .mix-bar-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .scadenza-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+  }
+  .scadenza-item:last-child { margin-bottom: 0; }
+
+  .morosi-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--danger-light);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    border-left: 4px solid var(--danger);
+  }
+  .morosi-item:last-child { margin-bottom: 0; }
+
+  /* ── REPORT STYLES ── */
+  .report-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .report-week-label {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .report-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .report-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+  .report-card.danger {
+    background: var(--danger-light);
+    border-color: var(--danger);
+  }
+  .report-card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mid);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .report-card.danger .report-card-label {
+    color: var(--danger);
+  }
+  .report-card-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--green-dark);
+  }
+  .report-card.danger .report-card-value {
+    color: var(--danger);
+  }
+  .report-card-sub {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .report-table-wrap {
+    margin-bottom: 20px;
+  }
+  .report-table-wrap table {
+    font-size: 13px;
+  }
+  .report-table-wrap thead th {
+    font-size: 10px;
+  }
+  .report-table-wrap tbody td {
+    padding: 10px 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🎾</div>
+    <div>
+      PADEL VILLAGE
+      <div class="logo-sub">Gestione Campo</div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+  <button class="tab-btn" onclick="switchTab('clienti')">Clienti</button>
+  <button class="tab-btn" onclick="switchTab('calendario')">Calendario</button>
+  <button class="tab-btn" onclick="switchTab('pacchetti')">Pacchetti</button>
+  <button class="tab-btn" onclick="switchTab('config')">Configurazione</button>
+  <button class="tab-btn" onclick="switchTab('report')">Report</button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DASHBOARD -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen active">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-sub">Panoramica attività e KPI settimanali</p>
+
+  <!-- Box Oggi -->
+  <div class="today-box">
+    <div class="today-box-title">📅 Oggi a colpo d'occhio</div>
+    <div id="todaySlots"></div>
+  </div>
+
+  <!-- KPI Settimana -->
+  <div class="kpi-grid" id="kpiWeek"></div>
+
+  <!-- Mix Attività -->
+  <div class="card">
+    <div class="card-title">Mix Attività — Settimana Corrente</div>
+    <div id="mixActivity"></div>
+  </div>
+
+  <!-- Pacchetti in Scadenza -->
+  <div class="card">
+    <div class="card-title">⚠️ Pacchetti in Scadenza (≤ 2 lezioni)</div>
+    <div id="scadenzaList"></div>
+  </div>
+
+  <!-- Clienti Morosi -->
+  <div class="card">
+    <div class="card-title">🚨 Clienti Morosi Attivi</div>
+    <div id="morosiList"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CLIENTI -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-clienti" class="screen">
+  <h1 class="page-title">Clienti</h1>
+  <p class="page-sub">Gestisci l'anagrafica dei tuoi clienti</p>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="card-title" style="margin:0;border:0;padding:0;">
+        Elenco Clienti <span id="clientiCount" style="font-weight:normal;color:var(--text-light);"></span>
+      </div>
+      <button class="btn btn-primary" onclick="openModalClienteNew()">➕ Nuovo Cliente</button>
+    </div>
+
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchClienti" placeholder="Cerca per nome, cognome o telefono..." oninput="renderClienti()">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Cellulare</th>
+            <th style="width:100px;">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyClienti"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CALENDARIO -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-calendario" class="screen">
+  <h1 class="page-title">Calendario</h1>
+  <p class="page-sub">Visualizza e gestisci le prenotazioni settimanali</p>
+
+  <div class="card">
+    <div class="calendar-header">
+      <div class="week-label" id="weekLabel"></div>
+      <div class="calendar-nav">
+        <button class="btn btn-ghost" onclick="prevWeek()">← Precedente</button>
+        <button class="btn btn-accent" onclick="goToday()">Oggi</button>
+        <button class="btn btn-ghost" onclick="nextWeek()">Successiva →</button>
+      </div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PACCHETTI -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-pacchetti" class="screen">
+  <h1 class="page-title">Pacchetti</h1>
+  <p class="page-sub">Gestisci i pacchetti da 5 lezioni</p>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="card-title" style="margin:0;border:0;padding:0;">
+        Elenco Pacchetti <span id="pacchettiCount" style="font-weight:normal;color:var(--text-light);"></span>
+      </div>
+      <button class="btn btn-primary" onclick="openModalPacchettoNew()">➕ Nuovo Pacchetto</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Attività</th>
+            <th>Rimanenti</th>
+            <th>Progresso</th>
+            <th>Data Creazione</th>
+            <th style="width:80px;">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyPacchetti"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CONFIGURAZIONE -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-config" class="screen">
+  <h1 class="page-title">Configurazione</h1>
+  <p class="page-sub">Imposta tariffe e compensi per attività</p>
+
+  <div id="configContainer"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- REPORT -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="screen-report" class="screen">
+  <h1 class="page-title">Report Economico</h1>
+  <p class="page-sub">Rendicontazione settimanale dettagliata</p>
+
+  <div class="report-nav">
+    <button class="btn btn-ghost" onclick="prevWeekReport()">← Precedente</button>
+    <div class="report-week-label" id="reportWeekLabel"></div>
+    <button class="btn btn-ghost" onclick="nextWeekReport()">Successiva →</button>
+  </div>
+
+  <div class="report-summary" id="reportSummary"></div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="card-title" style="margin:0;border:0;padding:0;">Dettaglio Attività</div>
+      <button class="btn btn-accent" onclick="exportReport()">📄 Esporta .txt</button>
+    </div>
+
+    <div class="report-table-wrap">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Ora</th>
+              <th>Attività</th>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Costo</th>
+              <th>Comp. PV</th>
+              <th>Comp. Pierangela</th>
+              <th>Comp. Santiago</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody id="reportTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MODAL CLIENTE -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="modalCliente" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="modalClienteTitle">Nuovo Cliente</div>
+      <button class="modal-close" onclick="closeModalCliente()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="fNome" placeholder="Mario">
+        </div>
+        <div class="form-group">
+          <label>Cognome</label>
+          <input type="text" id="fCognome" placeholder="Rossi">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cellulare</label>
+          <input type="tel" id="fCellulare" placeholder="347 123 4567">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModalCliente()">Annulla</button>
+      <button class="btn btn-primary" onclick="saveCliente()">💾 Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MODAL PRENOTAZIONE -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="modalPrenotazione" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="modalPrenotazioneTitle">Nuova Prenotazione</div>
+      <button class="modal-close" onclick="closeModalPrenotazione()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date" id="fBookingData">
+        </div>
+        <div class="form-group">
+          <label>Ora</label>
+          <input type="time" id="fBookingOra">
+        </div>
+        <div class="form-group">
+          <label>Attività</label>
+          <select id="fBookingAttivita" onchange="onActivityChange()">
+            <option value="">Seleziona...</option>
+            <option value="singola">Lezione Singola</option>
+            <option value="doppia">Lezione Doppia</option>
+            <option value="allenamento">Allenamento</option>
+            <option value="tattica">Partita Tattica</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <strong>Partecipanti</strong>
+          <div>
+            <button class="btn btn-sm btn-ghost" onclick="removePartecipante()" id="btnRemovePart">➖</button>
+            <button class="btn btn-sm btn-primary" onclick="addPartecipante()">➕ Aggiungi</button>
+          </div>
+        </div>
+        <div id="partecipantiContainer"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" onclick="deletePrenotazione()" id="btnDeleteBooking" style="display:none;margin-right:auto;">🗑 Elimina</button>
+      <button class="btn btn-ghost" onclick="closeModalPrenotazione()">Annulla</button>
+      <button class="btn btn-primary" onclick="savePrenotazione()">💾 Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MODAL PACCHETTO -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="modalPacchetto" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Nuovo Pacchetto (5 lezioni)</div>
+      <button class="modal-close" onclick="closeModalPacchetto()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cliente</label>
+          <select id="fPacchettoCliente">
+            <option value="">Seleziona cliente...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Attività</label>
+          <select id="fPacchettoAttivita">
+            <option value="">Seleziona...</option>
+            <option value="singola">Lezione Singola</option>
+            <option value="doppia">Lezione Doppia</option>
+            <option value="allenamento">Allenamento</option>
+            <option value="tattica">Partita Tattica</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModalPacchetto()">Annulla</button>
+      <button class="btn btn-primary" onclick="savePacchetto()">💾 Crea Pacchetto</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TOAST -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// GLOBAL STATE
+// ═══════════════════════════════════════════
+const LS = {
+  get: (key) => {
+    try {
+      const val = localStorage.getItem(key);
+      return val ? JSON.parse(val) : null;
+    } catch {
+      return null;
+    }
+  },
+  set: (key, val) => {
+    localStorage.setItem(key, JSON.stringify(val));
+  }
+};
+
+let clienti = LS.get('pv_clienti') || [];
+let prenotazioni = LS.get('pv_prenotazioni') || [];
+let pacchetti = LS.get('pv_pacchetti') || [];
+let config = LS.get('pv_config') || {
+  singola: { ut_costo: 0, ut_pv: 0, ut_pierangela: 0, pkt_totale: 0, pkt_pv: 0, pkt_pierangela: 0 },
+  doppia: { ut_costo: 0, ut_pv: 0, ut_pierangela: 0, pkt_totale: 0, pkt_pv: 0, pkt_pierangela: 0 },
+  allenamento: { ut_costo: 0, ut_pv: 0, ut_pierangela: 0, pkt_totale: 0, pkt_pv: 0, pkt_pierangela: 0 },
+  tattica: { ut_costo: 0, ut_pv: 0, ut_pierangela: 0, pkt_totale: 0, pkt_pv: 0, pkt_pierangela: 0 }
+};
+
+const ACTIVITIES = [
+  { key: 'singola', label: 'Lezione Singola', icon: '🎾', color: 'var(--singola)' },
+  { key: 'doppia', label: 'Lezione Doppia', icon: '👥', color: 'var(--doppia)' },
+  { key: 'allenamento', label: 'Allenamento', icon: '💪', color: 'var(--allenamento)' },
+  { key: 'tattica', label: 'Partita Tattica', icon: '🏆', color: 'var(--tattica)' }
+];
+
+const HOURS = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+
+let currentWeekStart = null;
+let reportWeekStart = null;
+let editingClienteId = null;
+let editingBookingId = null;
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function genId() {
+  return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function esc(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function toast(msg, error = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = error ? 'error' : '';
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  const btn = [...document.querySelectorAll('.tab-btn')].find(b => b.onclick && b.onclick.toString().includes(tab));
+  if (btn) btn.classList.add('active');
+
+  const screen = document.getElementById('screen-' + tab);
+  if (screen) screen.classList.add('active');
+
+  // render on switch
+  if (tab === 'clienti') renderClienti();
+  if (tab === 'calendario') renderCalendario();
+  if (tab === 'pacchetti') renderPacchetti();
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'report') renderReport();
+}
+
+function getMonday(d) {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(date.setDate(diff));
+}
+
+function formatDate(d) {
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function formatDateIT(d) {
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function parseDate(str) {
+  // str is YYYY-MM-DD
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+// ═══════════════════════════════════════════
+// CLIENTI
+// ═══════════════════════════════════════════
+function renderClienti() {
+  const tbody = document.getElementById('tbodyClienti');
+  const search = document.getElementById('searchClienti').value.toLowerCase();
+  const count = document.getElementById('clientiCount');
+
+  const filtered = clienti.filter(c => {
+    const full = `${c.nome} ${c.cognome} ${c.cellulare}`.toLowerCase();
+    return full.includes(search);
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="4">Nessun cliente trovato.</td></tr>`;
+    count.textContent = '';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(c => `
+    <tr>
+      <td><strong>${esc(c.nome)}</strong></td>
+      <td>${esc(c.cognome)}</td>
+      <td>${esc(c.cellulare)}</td>
+      <td class="td-actions">
+        <button class="btn btn-sm btn-ghost btn-icon" onclick="editCliente('${c.id}')" title="Modifica">✏️</button>
+        <button class="btn btn-sm btn-danger btn-icon" onclick="deleteCliente('${c.id}')" title="Elimina">🗑</button>
+      </td>
+    </tr>
+  `).join('');
+
+  count.textContent = `${filtered.length} cliente${filtered.length !== 1 ? 'i' : ''}`;
+}
+
+function openModalClienteNew() {
+  editingClienteId = null;
+  document.getElementById('modalClienteTitle').textContent = 'Nuovo Cliente';
+  document.getElementById('fNome').value = '';
+  document.getElementById('fCognome').value = '';
+  document.getElementById('fCellulare').value = '';
+  document.getElementById('modalCliente').classList.add('open');
+}
+
+function editCliente(id) {
+  const c = clienti.find(x => x.id === id);
+  if (!c) return;
+
+  editingClienteId = id;
+  document.getElementById('modalClienteTitle').textContent = 'Modifica Cliente';
+  document.getElementById('fNome').value = c.nome;
+  document.getElementById('fCognome').value = c.cognome;
+  document.getElementById('fCellulare').value = c.cellulare;
+  document.getElementById('modalCliente').classList.add('open');
+}
+
+function closeModalCliente() {
+  document.getElementById('modalCliente').classList.remove('open');
+}
+
+function saveCliente() {
+  const nome = document.getElementById('fNome').value.trim();
+  const cognome = document.getElementById('fCognome').value.trim();
+  const cellulare = document.getElementById('fCellulare').value.trim();
+
+  if (!nome || !cognome || !cellulare) {
+    toast('Compila tutti i campi.', true);
+    return;
+  }
+
+  if (editingClienteId) {
+    const idx = clienti.findIndex(c => c.id === editingClienteId);
+    clienti[idx] = { id: editingClienteId, nome, cognome, cellulare, createdAt: clienti[idx].createdAt };
+    toast('Cliente aggiornato.');
+  } else {
+    clienti.push({ id: genId(), nome, cognome, cellulare, createdAt: Date.now() });
+    toast('Cliente aggiunto.');
+  }
+
+  LS.set('pv_clienti', clienti);
+  closeModalCliente();
+  renderClienti();
+}
+
+function deleteCliente(id) {
+  const c = clienti.find(x => x.id === id);
+  if (!c) return;
+
+  // check if used
+  const inUso = prenotazioni.some(b => b.partecipanti.some(p => p.clienteId === id));
+  const hasPkt = pacchetti.some(p => p.clienteId === id);
+
+  if (inUso || hasPkt) {
+    toast('Impossibile eliminare: cliente in uso.', true);
+    return;
+  }
+
+  if (!confirm('Eliminare questo cliente?')) return;
+
+  clienti = clienti.filter(x => x.id !== id);
+  LS.set('pv_clienti', clienti);
+  renderClienti();
+  toast('Cliente eliminato.');
+}
+
+// ═══════════════════════════════════════════
+// CALENDARIO
+// ═══════════════════════════════════════════
+function renderCalendario() {
+  if (!currentWeekStart) {
+    currentWeekStart = getMonday(new Date());
+  }
+
+  const weekEnd = new Date(currentWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const lbl = `Lun ${currentWeekStart.getDate()}/${currentWeekStart.getMonth()+1} – Dom ${weekEnd.getDate()}/${weekEnd.getMonth()+1}/${weekEnd.getFullYear()}`;
+  document.getElementById('weekLabel').textContent = lbl;
+
+  const grid = document.getElementById('calendarGrid');
+  let html = '<div class="cal-header-cell"></div>';
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(currentWeekStart);
+    d.setDate(d.getDate() + i);
+    days.push(d);
+    const dayName = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'][d.getDay()];
+    html += `<div class="cal-header-cell">${dayName} ${d.getDate()}/${d.getMonth()+1}</div>`;
+  }
+
+  HOURS.forEach(h => {
+    html += `<div class="cal-time-cell">${h}</div>`;
+    days.forEach(d => {
+      const dateStr = formatDate(d);
+      const bookings = prenotazioni.filter(b => b.data === dateStr && b.ora === h);
+
+      if (bookings.length === 0) {
+        html += `<div class="cal-slot" onclick="openModalPrenotazioneNew('${dateStr}','${h}')"></div>`;
+      } else {
+        html += `<div class="cal-slot">`;
+        bookings.forEach(b => {
+          const act = ACTIVITIES.find(a => a.key === b.attivita);
+          html += `<div class="cal-booking cal-booking-${b.attivita}" onclick="editPrenotazione('${b.id}')">
+            ${act ? act.icon : ''} ${esc(act ? act.label : b.attivita)}<br>
+            <small>${b.partecipanti.length} part.</small>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+    });
+  });
+
+  grid.innerHTML = html;
+}
+
+function prevWeek() {
+  currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+  renderCalendario();
+}
+
+function nextWeek() {
+  currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+  renderCalendario();
+}
+
+function goToday() {
+  currentWeekStart = getMonday(new Date());
+  renderCalendario();
+}
+
+function openModalPrenotazioneNew(data, ora) {
+  editingBookingId = null;
+  document.getElementById('modalPrenotazioneTitle').textContent = 'Nuova Prenotazione';
+  document.getElementById('fBookingData').value = data;
+  document.getElementById('fBookingOra').value = ora;
+  document.getElementById('fBookingAttivita').value = '';
+  document.getElementById('btnDeleteBooking').style.display = 'none';
+
+  document.getElementById('partecipantiContainer').innerHTML = '';
+  addPartecipante();
+
+  document.getElementById('modalPrenotazione').classList.add('open');
+}
+
+function editPrenotazione(id) {
+  const b = prenotazioni.find(x => x.id === id);
+  if (!b) return;
+
+  editingBookingId = id;
+  document.getElementById('modalPrenotazioneTitle').textContent = 'Modifica Prenotazione';
+  document.getElementById('fBookingData').value = b.data;
+  document.getElementById('fBookingOra').value = b.ora;
+  document.getElementById('fBookingAttivita').value = b.attivita;
+  document.getElementById('btnDeleteBooking').style.display = 'block';
+
+  const container = document.getElementById('partecipantiContainer');
+  container.innerHTML = '';
+
+  b.partecipanti.forEach((p, i) => {
+    addPartecipante();
+
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    if (cliente) {
+      document.getElementById(`clienteId-${i}`).value = p.clienteId;
+      document.getElementById(`clienteNome-${i}`).value = `${cliente.nome} ${cliente.cognome}`;
+    }
+
+    document.getElementById(`pagamento-${i}`).value = p.pagamento;
+    document.getElementById(`moroso-${i}`).checked = p.moroso;
+
+    if (p.pacchetto) {
+      document.getElementById(`pacchetto-${i}`).value = p.pacchetto.pacchettoId;
+      document.getElementById(`selectPacchetto-${i}`).style.display = 'flex';
+    }
+
+    recalcPartecipante(i);
+  });
+
+  document.getElementById('modalPrenotazione').classList.add('open');
+}
+
+function closeModalPrenotazione() {
+  document.getElementById('modalPrenotazione').classList.remove('open');
+}
+
+let partecipanteCounter = 0;
+
+function onActivityChange() {
+  const numPart = document.querySelectorAll('.partecipante-row').length;
+  for (let i = 0; i < numPart; i++) {
+    recalcPartecipante(i);
+  }
+}
+
+function addPartecipante() {
+  const idx = partecipanteCounter++;
+  const container = document.getElementById('partecipantiContainer');
+  const attivita = document.getElementById('fBookingAttivita').value;
+
+  const div = document.createElement('div');
+  div.className = 'partecipante-row';
+  div.style.cssText = 'border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;background:var(--surface2);';
+
+  div.innerHTML = `
+    <div style="font-weight:bold;margin-bottom:10px;color:var(--green-dark);">Partecipante ${idx + 1}</div>
+
+    <div class="form-row">
+      <div class="form-group autocomplete-wrap">
+        <label>Cliente</label>
+        <input type="text" class="cliente-input" id="clienteNome-${idx}" placeholder="Inizia a digitare..." autocomplete="off" oninput="handleClienteInput(${idx})">
+        <input type="hidden" id="clienteId-${idx}">
+        <div class="autocomplete-results" id="autocomplete-${idx}"></div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Tipo Pagamento</label>
+        <select id="pagamento-${idx}" onchange="onPagamentoChange(${idx})">
+          <option value="una_tantum">Una Tantum</option>
+          <option value="pacchetto">Pacchetto</option>
+        </select>
+      </div>
+      <div class="form-group" id="selectPacchetto-${idx}" style="display:none;">
+        <label>Pacchetto</label>
+        <select id="pacchetto-${idx}" onchange="recalcPartecipante(${idx})">
+          <option value="">Seleziona...</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:0;min-width:auto;align-items:center;justify-content:center;">
+        <label style="opacity:0;">M</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input type="checkbox" id="moroso-${idx}" onchange="recalcPartecipante(${idx})">
+          <span style="font-size:12px;color:var(--text-mid);">Moroso</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row" style="background:var(--bg);padding:10px;border-radius:4px;font-size:12px;">
+      <div style="flex:1;">Costo: <strong id="costo-${idx}">0.00</strong>€</div>
+      <div style="flex:1;">PV: <strong id="pv-${idx}">0.00</strong>€</div>
+      <div style="flex:1;">Pierangela: <strong id="pierangela-${idx}">0.00</strong>€</div>
+      <div style="flex:1;">Santiago: <strong id="santiago-${idx}">0.00</strong>€</div>
+    </div>
+  `;
+
+  container.appendChild(div);
+
+  const numPart = document.querySelectorAll('.partecipante-row').length;
+  document.getElementById('btnRemovePart').disabled = numPart <= 1;
+
+  if (attivita) {
+    recalcPartecipante(idx);
+  }
+}
+
+function removePartecipante() {
+  const rows = document.querySelectorAll('.partecipante-row');
+  if (rows.length > 1) {
+    rows[rows.length - 1].remove();
+  }
+
+  const numPart = document.querySelectorAll('.partecipante-row').length;
+  document.getElementById('btnRemovePart').disabled = numPart <= 1;
+}
+
+function handleClienteInput(i) {
+  const input = document.getElementById(`clienteNome-${i}`);
+  const val = input.value.toLowerCase();
+  const results = document.getElementById(`autocomplete-${i}`);
+
+  if (val.length < 2) {
+    results.classList.remove('show');
+    return;
+  }
+
+  const filtered = clienti.filter(c => {
+    const full = `${c.nome} ${c.cognome}`.toLowerCase();
+    return full.includes(val);
+  });
+
+  if (filtered.length === 0) {
+    results.innerHTML = `<div class="autocomplete-item" style="cursor:default;color:var(--text-light);">Nessun cliente trovato</div>`;
+    results.classList.add('show');
+    return;
+  }
+
+  results.innerHTML = filtered.map(c => `
+    <div class="autocomplete-item" onclick="selectCliente(${i}, '${c.id}', '${esc(c.nome)} ${esc(c.cognome)}')">
+      <strong>${esc(c.nome)} ${esc(c.cognome)}</strong> · ${esc(c.cellulare)}
+    </div>
+  `).join('');
+
+  results.classList.add('show');
+}
+
+function selectCliente(i, id, nome) {
+  document.getElementById(`clienteId-${i}`).value = id;
+  document.getElementById(`clienteNome-${i}`).value = nome;
+  document.getElementById(`autocomplete-${i}`).classList.remove('show');
+
+  // refresh pacchetti disponibili
+  const attivita = document.getElementById('fBookingAttivita').value;
+  if (attivita) {
+    const pktSelect = document.getElementById(`pacchetto-${i}`);
+    const disponibili = pacchetti.filter(p => p.clienteId === id && p.attivita === attivita && p.remaining > 0);
+
+    pktSelect.innerHTML = '<option value="">Seleziona...</option>' + disponibili.map(p => {
+      return `<option value="${p.id}">${p.remaining}/5 rimanenti</option>`;
+    }).join('');
+  }
+
+  recalcPartecipante(i);
+}
+
+function onPagamentoChange(i) {
+  const tipo = document.getElementById(`pagamento-${i}`).value;
+  const selectPkt = document.getElementById(`selectPacchetto-${i}`);
+
+  if (tipo === 'pacchetto') {
+    selectPkt.style.display = 'flex';
+    const clienteId = document.getElementById(`clienteId-${i}`).value;
+    const attivita = document.getElementById('fBookingAttivita').value;
+
+    if (clienteId && attivita) {
+      const pktSelect = document.getElementById(`pacchetto-${i}`);
+      const disponibili = pacchetti.filter(p => p.clienteId === clienteId && p.attivita === attivita && p.remaining > 0);
+
+      pktSelect.innerHTML = '<option value="">Seleziona...</option>' + disponibili.map(p => {
+        return `<option value="${p.id}">${p.remaining}/5 rimanenti</option>`;
+      }).join('');
+    }
+  } else {
+    selectPkt.style.display = 'none';
+  }
+
+  recalcPartecipante(i);
+}
+
+function recalcPartecipante(i) {
+  const attivita = document.getElementById('fBookingAttivita').value;
+  const pagamento = document.getElementById(`pagamento-${i}`).value;
+  const moroso = document.getElementById(`moroso-${i}`).checked;
+
+  if (!attivita) {
+    document.getElementById(`costo-${i}`).textContent = '0.00';
+    document.getElementById(`pv-${i}`).textContent = '0.00';
+    document.getElementById(`pierangela-${i}`).textContent = '0.00';
+    document.getElementById(`santiago-${i}`).textContent = '0.00';
+    return;
+  }
+
+  const cfg = config[attivita] || {};
+  let costo, pv, pierangela, santiago;
+
+  if (pagamento === 'una_tantum') {
+    costo = cfg.ut_costo || 0;
+    pv = moroso ? 0 : (cfg.ut_pv || 0);
+    pierangela = moroso ? 0 : (cfg.ut_pierangela || 0);
+    santiago = moroso ? 0 : (costo - pv - pierangela);
+  } else {
+    const costoLez = (cfg.pkt_totale || 0) / 5;
+    costo = costoLez;
+    pv = moroso ? 0 : (cfg.pkt_pv || 0);
+    pierangela = moroso ? 0 : (cfg.pkt_pierangela || 0);
+    santiago = moroso ? 0 : (costoLez - pv - pierangela);
+  }
+
+  document.getElementById(`costo-${i}`).textContent = costo.toFixed(2);
+  document.getElementById(`pv-${i}`).textContent = pv.toFixed(2);
+  document.getElementById(`pierangela-${i}`).textContent = pierangela.toFixed(2);
+  document.getElementById(`santiago-${i}`).textContent = santiago.toFixed(2);
+}
+
+function savePrenotazione() {
+  const data = document.getElementById('fBookingData').value;
+  const ora = document.getElementById('fBookingOra').value;
+  const attivita = document.getElementById('fBookingAttivita').value;
+
+  if (!data || !ora || !attivita) {
+    toast('Compila data, ora e attività.', true);
+    return;
+  }
+
+  const numPart = document.querySelectorAll('.partecipante-row').length;
+  const partecipanti = [];
+
+  for (let i = 0; i < numPart; i++) {
+    const clienteId = document.getElementById(`clienteId-${i}`)?.value;
+    if (!clienteId) {
+      toast(`Seleziona il cliente per il partecipante ${i + 1}.`, true);
+      return;
+    }
+
+    const pagamento = document.getElementById(`pagamento-${i}`).value;
+    const moroso = document.getElementById(`moroso-${i}`).checked;
+
+    let pacchettoId = null;
+    let lezioneNum = null;
+
+    if (pagamento === 'pacchetto') {
+      pacchettoId = document.getElementById(`pacchetto-${i}`)?.value;
+      if (!pacchettoId) {
+        toast(`Seleziona un pacchetto per il partecipante ${i + 1}.`, true);
+        return;
+      }
+
+      const pkt = pacchetti.find(p => p.id === pacchettoId);
+      if (!pkt || pkt.remaining <= 0) {
+        toast(`Pacchetto esaurito per il partecipante ${i + 1}.`, true);
+        return;
+      }
+    }
+
+    const cfg = config[attivita] || {};
+    let costo, pv, pierangela, santiago;
+
+    if (pagamento === 'una_tantum') {
+      costo = cfg.ut_costo || 0;
+      pv = moroso ? 0 : (cfg.ut_pv || 0);
+      pierangela = moroso ? 0 : (cfg.ut_pierangela || 0);
+      santiago = moroso ? 0 : (costo - pv - pierangela);
+    } else {
+      const costoLez = (cfg.pkt_totale || 0) / 5;
+      costo = costoLez;
+      pv = moroso ? 0 : (cfg.pkt_pv || 0);
+      pierangela = moroso ? 0 : (cfg.pkt_pierangela || 0);
+      santiago = moroso ? 0 : (costoLez - pv - pierangela);
+
+      const pkt = pacchetti.find(p => p.id === pacchettoId);
+      lezioneNum = 6 - pkt.remaining;
+    }
+
+    partecipanti.push({
+      clienteId,
+      pagamento,
+      moroso,
+      pacchetto: pacchettoId ? { pacchettoId, lezioneNum } : null,
+      costo,
+      pv,
+      pierangela,
+      santiago
+    });
+  }
+
+  // check se è modifica o nuovo
+  if (editingBookingId) {
+    // modifica
+    const oldBooking = prenotazioni.find(b => b.id === editingBookingId);
+    
+    // restore vecchi pacchetti
+    if (oldBooking) {
+      oldBooking.partecipanti.forEach(p => {
+        if (p.pacchetto) {
+          const pkt = pacchetti.find(pk => pk.id === p.pacchetto.pacchettoId);
+          if (pkt) {
+            pkt.remaining += 1;
+          }
+        }
+      });
+    }
+
+    // decrementa nuovi pacchetti
+    partecipanti.forEach(p => {
+      if (p.pacchetto) {
+        const pkt = pacchetti.find(pk => pk.id === p.pacchetto.pacchettoId);
+        if (pkt) {
+          pkt.remaining -= 1;
+        }
+      }
+    });
+
+    const idx = prenotazioni.findIndex(b => b.id === editingBookingId);
+    prenotazioni[idx] = {
+      id: editingBookingId,
+      data,
+      ora,
+      attivita,
+      partecipanti
+    };
+
+    toast('Prenotazione aggiornata.');
+  } else {
+    // nuovo
+    partecipanti.forEach(p => {
+      if (p.pacchetto) {
+        const pkt = pacchetti.find(pk => pk.id === p.pacchetto.pacchettoId);
+        if (pkt) {
+          pkt.remaining -= 1;
+        }
+      }
+    });
+
+    prenotazioni.push({
+      id: genId(),
+      data,
+      ora,
+      attivita,
+      partecipanti
+    });
+
+    toast('Prenotazione creata.');
+  }
+
+  LS.set('pv_prenotazioni', prenotazioni);
+  LS.set('pv_pacchetti', pacchetti);
+
+  closeModalPrenotazione();
+  renderCalendario();
+}
+
+function deletePrenotazione() {
+  if (!editingBookingId) return;
+  if (!confirm('Eliminare questa prenotazione?')) return;
+
+  const booking = prenotazioni.find(b => b.id === editingBookingId);
+  if (booking) {
+    // restore pacchetti
+    booking.partecipanti.forEach(p => {
+      if (p.pacchetto) {
+        const pkt = pacchetti.find(pk => pk.id === p.pacchetto.pacchettoId);
+        if (pkt) {
+          pkt.remaining += 1;
+        }
+      }
+    });
+  }
+
+  prenotazioni = prenotazioni.filter(b => b.id !== editingBookingId);
+
+  LS.set('pv_prenotazioni', prenotazioni);
+  LS.set('pv_pacchetti', pacchetti);
+
+  toast('Prenotazione eliminata.');
+  closeModalPrenotazione();
+  renderCalendario();
+}
+
+// ═══════════════════════════════════════════
+// PACCHETTI
+// ═══════════════════════════════════════════
+function renderPacchetti() {
+  const tbody = document.getElementById('tbodyPacchetti');
+  const count = document.getElementById('pacchettiCount');
+
+  if (pacchetti.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">Nessun pacchetto creato.</td></tr>`;
+    count.textContent = '';
+    return;
+  }
+
+  tbody.innerHTML = pacchetti.map(p => {
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    const act = ACTIVITIES.find(a => a.key === p.attivita);
+    const prog = ((5 - p.remaining) / 5) * 100;
+    const createdDate = new Date(p.createdAt);
+    const dateStr = createdDate.toLocaleDateString('it-IT');
+
+    return `
+      <tr>
+        <td><strong>${esc(cliente ? `${cliente.nome} ${cliente.cognome}` : '?')}</strong></td>
+        <td>${esc(act?.label || p.attivita)}</td>
+        <td style="font-weight:bold;color:${p.remaining === 0 ? 'var(--danger)' : 'var(--green-dark)'};">${p.remaining}/5</td>
+        <td>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${prog}%;"></div>
+          </div>
+        </td>
+        <td style="font-size:12px;color:var(--text-light);">${dateStr}</td>
+        <td>
+          <button class="btn btn-sm btn-danger btn-icon" onclick="deletePacchetto('${p.id}')" title="Elimina">🗑</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  count.textContent = `${pacchetti.length} pacchetto${pacchetti.length !== 1 ? 'i' : ''}`;
+}
+
+function openModalPacchettoNew() {
+  const select = document.getElementById('fPacchettoCliente');
+  select.innerHTML = '<option value="">Seleziona cliente...</option>' + 
+    clienti.map(c => `<option value="${c.id}">${esc(c.nome)} ${esc(c.cognome)}</option>`).join('');
+  
+  document.getElementById('fPacchettoAttivita').value = '';
+  document.getElementById('modalPacchetto').classList.add('open');
+}
+
+function closeModalPacchetto() {
+  document.getElementById('modalPacchetto').classList.remove('open');
+}
+
+function savePacchetto() {
+  const clienteId = document.getElementById('fPacchettoCliente').value;
+  const attivita = document.getElementById('fPacchettoAttivita').value;
+
+  if (!clienteId || !attivita) {
+    toast('Seleziona cliente e attività.', true);
+    return;
+  }
+
+  pacchetti.push({
+    id: genId(),
+    clienteId,
+    attivita,
+    remaining: 5,
+    createdAt: Date.now()
+  });
+
+  LS.set('pv_pacchetti', pacchetti);
+  toast('Pacchetto creato.');
+  closeModalPacchetto();
+  renderPacchetti();
+}
+
+function deletePacchetto(id) {
+  const p = pacchetti.find(x => x.id === id);
+  if (!p) return;
+
+  // check se il pacchetto è in uso
+  const inUso = prenotazioni.some(b => 
+    b.partecipanti.some(part => part.pacchetto?.pacchettoId === id)
+  );
+
+  if (inUso) {
+    toast('Impossibile eliminare: pacchetto in uso.', true);
+    return;
+  }
+
+  if (!confirm('Eliminare questo pacchetto?')) return;
+
+  pacchetti = pacchetti.filter(x => x.id !== id);
+  LS.set('pv_pacchetti', pacchetti);
+  renderPacchetti();
+  toast('Pacchetto eliminato.');
+}
+
+// ═══════════════════════════════════════════
+// CONFIGURAZIONE
+// ═══════════════════════════════════════════
+function buildConfigUI() {
+  const container = document.getElementById('configContainer');
+
+  ACTIVITIES.forEach(act => {
+    const cfg = config[act.key] || {};
+
+    const html = `
+      <div class="card">
+        <div class="card-title">${act.icon} ${esc(act.label)}</div>
+
+        <div style="margin-bottom:20px;">
+          <div style="font-weight:bold;margin-bottom:10px;color:var(--text-mid);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;">Una Tantum</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Costo Totale (€)</label>
+              <input type="number" id="${act.key}_ut_costo" value="${cfg.ut_costo || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Compenso PV (€)</label>
+              <input type="number" id="${act.key}_ut_pv" value="${cfg.ut_pv || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Compenso Pierangela (€)</label>
+              <input type="number" id="${act.key}_ut_pierangela" value="${cfg.ut_pierangela || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Santiago (auto)</label>
+              <input type="number" id="${act.key}_ut_santiago" readonly value="0">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-weight:bold;margin-bottom:10px;color:var(--text-mid);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;">Pacchetto (5 lezioni)</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prezzo Totale Pacchetto (€)</label>
+              <input type="number" id="${act.key}_pkt_totale" value="${cfg.pkt_totale || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Compenso PV per Lezione (€)</label>
+              <input type="number" id="${act.key}_pkt_pv" value="${cfg.pkt_pv || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Compenso Pierangela per Lezione (€)</label>
+              <input type="number" id="${act.key}_pkt_pierangela" value="${cfg.pkt_pierangela || 0}" step="0.01" min="0" oninput="saveConfig()">
+            </div>
+            <div class="form-group">
+              <label>Santiago per Lezione (auto)</label>
+              <input type="number" id="${act.key}_pkt_santiago" readonly value="0">
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', html);
+  });
+
+  updateConfigCalc();
+}
+
+function saveConfig() {
+  ACTIVITIES.forEach(act => {
+    config[act.key] = {
+      ut_costo: parseFloat(document.getElementById(`${act.key}_ut_costo`).value) || 0,
+      ut_pv: parseFloat(document.getElementById(`${act.key}_ut_pv`).value) || 0,
+      ut_pierangela: parseFloat(document.getElementById(`${act.key}_ut_pierangela`).value) || 0,
+      pkt_totale: parseFloat(document.getElementById(`${act.key}_pkt_totale`).value) || 0,
+      pkt_pv: parseFloat(document.getElementById(`${act.key}_pkt_pv`).value) || 0,
+      pkt_pierangela: parseFloat(document.getElementById(`${act.key}_pkt_pierangela`).value) || 0
+    };
+  });
+
+  LS.set('pv_config', config);
+  updateConfigCalc();
+}
+
+function updateConfigCalc() {
+  ACTIVITIES.forEach(act => {
+    const cfg = config[act.key] || {};
+
+    const santiagoUT = (cfg.ut_costo || 0) - (cfg.ut_pv || 0) - (cfg.ut_pierangela || 0);
+    const costoLez = (cfg.pkt_totale || 0) / 5;
+    const santiagoPkt = costoLez - (cfg.pkt_pv || 0) - (cfg.pkt_pierangela || 0);
+
+    document.getElementById(`${act.key}_ut_santiago`).value = santiagoUT.toFixed(2);
+    document.getElementById(`${act.key}_pkt_santiago`).value = santiagoPkt.toFixed(2);
+  });
+}
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard() {
+  renderTodaySlots();
+  renderKPIWeek();
+  renderMixActivity();
+  renderScadenza();
+  renderMorosi();
+}
+
+function renderTodaySlots() {
+  const container = document.getElementById('todaySlots');
+  const today = formatDate(new Date());
+
+  const todayBookings = prenotazioni.filter(b => b.data === today).sort((a, b) => a.ora.localeCompare(b.ora));
+
+  if (todayBookings.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-light);font-style:italic;">Nessuna attività oggi</div>`;
+    return;
+  }
+
+  container.innerHTML = todayBookings.map(b => {
+    const act = ACTIVITIES.find(a => a.key === b.attivita);
+    const partList = b.partecipanti.map(p => {
+      const cliente = clienti.find(c => c.id === p.clienteId);
+      return cliente ? `${cliente.nome} ${cliente.cognome} ${cliente.cellulare}` : '?';
+    }).join(' · ');
+
+    return `
+      <div class="today-slot">
+        <div class="today-slot-time">${b.ora}</div>
+        <div class="today-slot-activity">${act ? act.icon : ''} ${esc(act ? act.label : b.attivita)}</div>
+        <div class="today-slot-participants">${esc(partList)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderKPIWeek() {
+  const container = document.getElementById('kpiWeek');
+  const weekStart = getMonday(new Date());
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const weekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= weekStart && d <= weekEnd;
+  });
+
+  let incasso = 0;
+  let santiago = 0;
+  let pv = 0;
+  let pierangela = 0;
+
+  weekBookings.forEach(b => {
+    b.partecipanti.forEach(p => {
+      incasso += p.costo;
+      santiago += p.santiago;
+      pv += p.pv;
+      pierangela += p.pierangela;
+    });
+  });
+
+  container.innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">Incasso Totale</div>
+      <div class="kpi-value">${incasso.toFixed(2)}€</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Compenso Santiago</div>
+      <div class="kpi-value">${santiago.toFixed(2)}€</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Compenso PV</div>
+      <div class="kpi-value">${pv.toFixed(2)}€</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Compenso Pierangela</div>
+      <div class="kpi-value">${pierangela.toFixed(2)}€</div>
+    </div>
+  `;
+}
+
+function renderMixActivity() {
+  const container = document.getElementById('mixActivity');
+  const weekStart = getMonday(new Date());
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const weekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= weekStart && d <= weekEnd;
+  });
+
+  const counts = { singola: 0, doppia: 0, allenamento: 0, tattica: 0 };
+  weekBookings.forEach(b => {
+    counts[b.attivita] = (counts[b.attivita] || 0) + 1;
+  });
+
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+
+  if (total === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-light);font-style:italic;">Nessuna attività questa settimana</div>`;
+    return;
+  }
+
+  container.innerHTML = ACTIVITIES.map(act => {
+    const count = counts[act.key] || 0;
+    const perc = total > 0 ? (count / total * 100) : 0;
+
+    return `
+      <div class="mix-bar">
+        <div class="mix-bar-label">${act.icon} ${esc(act.label)} — ${count} slot (${perc.toFixed(0)}%)</div>
+        <div class="mix-bar-track">
+          <div class="mix-bar-fill" style="width:${perc}%;background:${act.color};">${count}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderScadenza() {
+  const container = document.getElementById('scadenzaList');
+  const inScadenza = pacchetti.filter(p => p.remaining <= 2 && p.remaining > 0).sort((a, b) => a.remaining - b.remaining);
+
+  if (inScadenza.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-light);font-style:italic;">Nessun pacchetto in scadenza</div>`;
+    return;
+  }
+
+  container.innerHTML = inScadenza.map(p => {
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    const act = ACTIVITIES.find(a => a.key === p.attivita);
+
+    let badgeClass = 'badge-yellow';
+    if (p.remaining === 0) badgeClass = 'badge-red';
+    else if (p.remaining === 1) badgeClass = 'badge-orange';
+
+    return `
+      <div class="scadenza-item">
+        <div>
+          <strong>${esc(cliente ? `${cliente.nome} ${cliente.cognome}` : '?')}</strong> · ${esc(act?.label || p.attivita)}
+        </div>
+        <div class="badge ${badgeClass}">${p.remaining}/5</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderMorosi() {
+  const container = document.getElementById('morosiList');
+
+  // Prenotazioni morose nelle ultime 4 settimane
+  const fourWeeksAgo = new Date();
+  fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+
+  const morosiMap = {};
+
+  prenotazioni.forEach(b => {
+    const d = parseDate(b.data);
+    if (d < fourWeeksAgo) return;
+
+    b.partecipanti.forEach(p => {
+      if (p.moroso) {
+        if (!morosiMap[p.clienteId]) {
+          morosiMap[p.clienteId] = 0;
+        }
+        morosiMap[p.clienteId] += p.costo;
+      }
+    });
+  });
+
+  const morosiList = Object.keys(morosiMap).map(clienteId => {
+    const cliente = clienti.find(c => c.id === clienteId);
+    return {
+      cliente,
+      importo: morosiMap[clienteId]
+    };
+  });
+
+  if (morosiList.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-light);font-style:italic;">Nessun cliente moroso</div>`;
+    return;
+  }
+
+  container.innerHTML = morosiList.map(m => {
+    return `
+      <div class="morosi-item">
+        <div>
+          <strong>${esc(m.cliente ? `${m.cliente.nome} ${m.cliente.cognome}` : '?')}</strong><br>
+          <span style="font-size:12px;color:var(--text-mid);">${esc(m.cliente?.cellulare || '')}</span>
+        </div>
+        <div style="font-weight:bold;color:var(--danger);">${m.importo.toFixed(2)}€</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════════
+function renderReport() {
+  if (!reportWeekStart) {
+    reportWeekStart = getMonday(new Date());
+  }
+
+  const weekEnd = new Date(reportWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const lbl = `Lun ${reportWeekStart.getDate()}/${reportWeekStart.getMonth()+1} – Dom ${weekEnd.getDate()}/${weekEnd.getMonth()+1}/${weekEnd.getFullYear()}`;
+  document.getElementById('reportWeekLabel').textContent = lbl;
+
+  renderReportSummary();
+  renderReportTable();
+}
+
+function prevWeekReport() {
+  reportWeekStart.setDate(reportWeekStart.getDate() - 7);
+  renderReport();
+}
+
+function nextWeekReport() {
+  reportWeekStart.setDate(reportWeekStart.getDate() + 7);
+  renderReport();
+}
+
+function renderReportSummary() {
+  const container = document.getElementById('reportSummary');
+  const weekEnd = new Date(reportWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const weekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= reportWeekStart && d <= weekEnd;
+  });
+
+  let incasso = 0;
+  let santiago = 0;
+  let pv = 0;
+  let pierangela = 0;
+  let morosiImporto = 0;
+  let morosiCount = 0;
+
+  const rows = [];
+  weekBookings.forEach(b => {
+    b.partecipanti.forEach(p => {
+      incasso += p.costo;
+      santiago += p.santiago;
+      pv += p.pv;
+      pierangela += p.pierangela;
+
+      if (p.moroso) {
+        morosiImporto += p.costo;
+        morosiCount++;
+      }
+
+      rows.push({ booking: b, part: p });
+    });
+  });
+
+  const numSlot = weekBookings.length;
+
+  container.innerHTML = `
+    <div class="report-card">
+      <div class="report-card-label">Attività Totali</div>
+      <div class="report-card-value">${numSlot}</div>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Incasso Totale</div>
+      <div class="report-card-value">${incasso.toFixed(2)}€</div>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Comp. Santiago</div>
+      <div class="report-card-value">${santiago.toFixed(2)}€</div>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Comp. PV</div>
+      <div class="report-card-value">${pv.toFixed(2)}€</div>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Comp. Pierangela</div>
+      <div class="report-card-value">${pierangela.toFixed(2)}€</div>
+    </div>
+    <div class="report-card danger">
+      <div class="report-card-label">Morosi</div>
+      <div class="report-card-value">${morosiImporto.toFixed(2)}€</div>
+      <div class="report-card-sub">${morosiCount} attività</div>
+    </div>
+  `;
+}
+
+function renderReportTable() {
+  const tbody = document.getElementById('reportTableBody');
+  const weekEnd = new Date(reportWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const weekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= reportWeekStart && d <= weekEnd;
+  });
+
+  const rows = [];
+  weekBookings.forEach(b => {
+    b.partecipanti.forEach(p => {
+      rows.push({ booking: b, part: p });
+    });
+  });
+
+  // ordinamento data → ora
+  rows.sort((a, b) => {
+    const cmpData = a.booking.data.localeCompare(b.booking.data);
+    if (cmpData !== 0) return cmpData;
+    return a.booking.ora.localeCompare(b.booking.ora);
+  });
+
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="10">Nessuna attività in questa settimana</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => {
+    const b = r.booking;
+    const p = r.part;
+
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    const act = ACTIVITIES.find(a => a.key === b.attivita);
+
+    const tipo = p.pagamento === 'una_tantum' ? 'Una tantum' : 'Pacchetto';
+
+    let note = '';
+    if (p.pacchetto) {
+      note = `Pkt ${p.pacchetto.lezioneNum}/5`;
+    }
+    if (p.moroso) {
+      note += (note ? ' · ' : '') + '⚠️ Moroso';
+    }
+
+    const dataIT = formatDateIT(parseDate(b.data));
+
+    return `
+      <tr>
+        <td>${dataIT}</td>
+        <td>${b.ora}</td>
+        <td>${esc(act?.label || b.attivita)}</td>
+        <td><strong>${esc(cliente ? `${cliente.nome} ${cliente.cognome}` : '?')}</strong></td>
+        <td>${tipo}</td>
+        <td>${p.costo.toFixed(2)}€</td>
+        <td>${p.pv.toFixed(2)}€</td>
+        <td>${p.pierangela.toFixed(2)}€</td>
+        <td>${p.santiago.toFixed(2)}€</td>
+        <td style="font-size:11px;color:var(--text-mid);">${note}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function exportReport() {
+  const weekEnd = new Date(reportWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const weekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= reportWeekStart && d <= weekEnd;
+  });
+
+  const rows = [];
+  weekBookings.forEach(b => {
+    b.partecipanti.forEach(p => {
+      rows.push({ booking: b, part: p });
+    });
+  });
+
+  rows.sort((a, b) => {
+    const cmpData = a.booking.data.localeCompare(b.booking.data);
+    if (cmpData !== 0) return cmpData;
+    return a.booking.ora.localeCompare(b.booking.ora);
+  });
+
+  let incasso = 0;
+  let santiago = 0;
+  let pv = 0;
+  let pierangela = 0;
+  let morosiImporto = 0;
+
+  rows.forEach(r => {
+    incasso += r.part.costo;
+    santiago += r.part.santiago;
+    pv += r.part.pv;
+    pierangela += r.part.pierangela;
+    if (r.part.moroso) morosiImporto += r.part.costo;
+  });
+
+  const startStr = formatDateIT(reportWeekStart);
+  const endStr = formatDateIT(weekEnd);
+
+  let txt = `═══════════════════════════════════════════════════════════════
+RENDICONTAZIONE PADEL VILLAGE
+${startStr} – ${endStr}
+═══════════════════════════════════════════════════════════════
+
+TOTALI SETTIMANA
+────────────────────────────────────────────────────────────────
+Attività totali:         ${weekBookings.length}
+Incasso totale:          ${incasso.toFixed(2)}€
+Compenso Santiago:       ${santiago.toFixed(2)}€
+Compenso PV:             ${pv.toFixed(2)}€
+Compenso Pierangela:     ${pierangela.toFixed(2)}€
+Morosi (€):              ${morosiImporto.toFixed(2)}€
+
+═══════════════════════════════════════════════════════════════
+DETTAGLIO ATTIVITÀ
+═══════════════════════════════════════════════════════════════
+
+`;
+
+  rows.forEach(r => {
+    const b = r.booking;
+    const p = r.part;
+
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    const act = ACTIVITIES.find(a => a.key === b.attivita);
+
+    const tipo = p.pagamento === 'una_tantum' ? 'Una tantum' : 'Pacchetto';
+
+    let note = '';
+    if (p.pacchetto) {
+      note = `Pkt ${p.pacchetto.lezioneNum}/5`;
+    }
+    if (p.moroso) {
+      note += (note ? ' · ' : '') + 'MOROSO';
+    }
+
+    const dataIT = formatDateIT(parseDate(b.data));
+
+    txt += `${dataIT} · ${b.ora} · ${act?.label || b.attivita} · ${cliente ? `${cliente.nome} ${cliente.cognome}` : '?'}\n`;
+    txt += `  Tipo: ${tipo} · Costo: ${p.costo.toFixed(2)}€ · PV: ${p.pv.toFixed(2)}€ · Pierangela: ${p.pierangela.toFixed(2)}€ · Santiago: ${p.santiago.toFixed(2)}€\n`;
+    if (note) {
+      txt += `  Note: ${note}\n`;
+    }
+    txt += `\n`;
+  });
+
+  txt += `═══════════════════════════════════════════════════════════════\n`;
+  txt += `Fine rendicontazione\n`;
+
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Rendicontazione_${reportWeekStart.getDate()}-${reportWeekStart.getMonth()+1}-${reportWeekStart.getFullYear()}_${weekEnd.getDate()}-${weekEnd.getMonth()+1}-${weekEnd.getFullYear()}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  toast('File esportato!');
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+buildConfigUI();
+renderDashboard();
+
+if (!currentWeekStart) {
+  currentWeekStart = getMonday(new Date());
+}
+if (!reportWeekStart) {
+  reportWeekStart = getMonday(new Date());
+}
+
+// chiudi modal se click fuori
+document.getElementById('modalCliente').addEventListener('click', function(e) {
+  if (e.target === this) closeModalCliente();
+});
+document.getElementById('modalPrenotazione').addEventListener('click', function(e) {
+  if (e.target === this) closeModalPrenotazione();
+});
+document.getElementById('modalPacchetto').addEventListener('click', function(e) {
+  if (e.target === this) closeModalPacchetto();
+});
+
+// keyboard ESC
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModalCliente();
+    closeModalPrenotazione();
+    closeModalPacchetto();
+  }
+});
+
+// chiudi autocomplete se click fuori
+document.addEventListener('click', e => {
+  if (!e.target.classList.contains('cliente-input')) {
+    document.querySelectorAll('.autocomplete-results').forEach(el => el.classList.remove('show'));
+  }
+});
+</script>
+</body>
+</html>
