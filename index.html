@@ -1326,6 +1326,7 @@ function goToday() {
 
 function openModalPrenotazioneNew(data, ora) {
   editingBookingId = null;
+  partecipanteCounter = 0;
   document.getElementById('modalPrenotazioneTitle').textContent = 'Nuova Prenotazione';
   document.getElementById('fBookingData').value = data;
   document.getElementById('fBookingOra').value = ora;
@@ -1343,6 +1344,7 @@ function editPrenotazione(id) {
   if (!b) return;
 
   editingBookingId = id;
+  partecipanteCounter = 0;
   document.getElementById('modalPrenotazioneTitle').textContent = 'Modifica Prenotazione';
   document.getElementById('fBookingData').value = b.data;
   document.getElementById('fBookingOra').value = b.ora;
