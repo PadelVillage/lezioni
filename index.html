@@ -738,7 +738,7 @@
 
 <nav>
   <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-  <button class="tab-btn" onclick="switchTab('calendario')">Calendario</button>
+  <button class="tab-btn" onclick="switchTab('calendario')">Prenota</button>
   <button class="tab-btn" onclick="switchTab('clienti')">Clienti</button>
   <button class="tab-btn" onclick="switchTab('pacchetti')">Pacchetti</button>
   <button class="tab-btn" onclick="switchTab('report')">Report</button>
@@ -793,7 +793,7 @@
   <!-- CALENDARIO -->
   <!-- ══════════════════════════════════════════════════════════════════════ -->
   <div id="screen-calendario" class="screen">
-    <h1 class="page-title">Calendario</h1>
+    <h1 class="page-title">Prenota</h1>
     <p class="page-sub">Vista settimanale con card giornaliere</p>
 
     <div class="week-nav">
@@ -810,11 +810,7 @@
     <div class="filter-chips">
       <button class="filter-chip active" onclick="setFilter('tutti')">Tutti</button>
       <button class="filter-chip" onclick="setFilter('liberi')">Solo liberi</button>
-      <button class="filter-chip" onclick="setFilter('mie')">Tue lezioni</button>
-      <button class="filter-chip" onclick="setFilter('mattina')">🌅 Mattina</button>
-      <button class="filter-chip" onclick="setFilter('pranzo')">🍝 Pranzo</button>
-      <button class="filter-chip" onclick="setFilter('pomeriggio')">☀️ Pomeriggio</button>
-      <button class="filter-chip" onclick="setFilter('sera')">🌙 Sera</button>
+      <button class="filter-chip" onclick="setFilter('occupati')">Occupati</button>
     </div>
 
     <div class="calendar-grid" id="calendar-grid"></div>
@@ -1878,22 +1874,10 @@ function setFilter(filter) {
 function matchesFilter(dayISO, ora) {
   // Controlla se uno slot matcha il filtro attivo
   
-  // Filtro fascia oraria
-  const h = parseInt(ora.split(':')[0]);
-  if (activeFilter === 'mattina' && (h < 7 || h >= 12)) return false;
-  if (activeFilter === 'pranzo' && (h < 12 || h >= 15)) return false;
-  if (activeFilter === 'pomeriggio' && (h < 15 || h >= 18)) return false;
-  if (activeFilter === 'sera' && (h < 18 || h >= 23)) return false;
-  
   // Filtro disponibilità
   const occupato = isSlotOccupato(dayISO, ora, 1);
   if (activeFilter === 'liberi' && occupato) return false;
-  
-  // Filtro "tue lezioni" - TODO: implementare logica utente
-  if (activeFilter === 'mie') {
-    if (!occupato) return false;
-    // Per ora mostriamo tutte le occupate, in futuro filtrare per utente
-  }
+  if (activeFilter === 'occupati' && !occupato) return false;
   
   return true;
 }
@@ -2446,7 +2430,7 @@ if (calendarScreen) {
   handleGesture(calendarScreen, {
     swipeLeft: () => {
       const activeTab = document.querySelector('.tab-btn.active');
-      if (activeTab && activeTab.textContent === 'Calendario') {
+      if (activeTab && activeTab.textContent === 'Prenota') {
         haptic(30);
         nextWeek();
         toast('📅 Settimana successiva', false, 1500);
@@ -2454,7 +2438,7 @@ if (calendarScreen) {
     },
     swipeRight: () => {
       const activeTab = document.querySelector('.tab-btn.active');
-      if (activeTab && activeTab.textContent === 'Calendario') {
+      if (activeTab && activeTab.textContent === 'Prenota') {
         haptic(30);
         prevWeek();
         toast('📅 Settimana precedente', false, 1500);
