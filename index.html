@@ -822,6 +822,7 @@
     <div class="calendar-header">
       <div class="week-label" id="weekLabel"></div>
       <div class="calendar-nav">
+        <button class="btn btn-primary" onclick="openModalPrenotazioneNew()" style="margin-right:12px;">➕ Nuova Prenotazione</button>
         <button class="btn btn-ghost" onclick="prevWeek()">← Precedente</button>
         <button class="btn btn-accent" onclick="goToday()">Oggi</button>
         <button class="btn btn-ghost" onclick="nextWeek()">Successiva →</button>
@@ -1328,8 +1329,15 @@ function openModalPrenotazioneNew(data, ora) {
   editingBookingId = null;
   partecipanteCounter = 0;
   document.getElementById('modalPrenotazioneTitle').textContent = 'Nuova Prenotazione';
+  
+  // Se data non è fornita, usa la data corrente
+  if (!data) {
+    const oggi = new Date();
+    data = formatDate(oggi);
+  }
+  
   document.getElementById('fBookingData').value = data;
-  document.getElementById('fBookingOra').value = ora;
+  document.getElementById('fBookingOra').value = ora || '';
   document.getElementById('fBookingAttivita').value = '';
   document.getElementById('btnDeleteBooking').style.display = 'none';
 
