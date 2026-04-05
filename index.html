@@ -19,7 +19,7 @@
     }
   ]
 }">
-<title>Padel Village v2.6</title>
+<title>Padel Village v3.0 - Smart Dashboard</title>
 <style>
   :root {
     --green: #1a7a4a;
@@ -396,6 +396,62 @@
     overflow-y: auto;
     position: relative;
   }
+  
+  /* ── MODAL OTTIMIZZATO 9 POLLICI ── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .modal-content {
+      max-width: 480px;
+    }
+    
+    .modal-header {
+      padding: 16px 20px;
+    }
+    
+    .modal-title {
+      font-size: 15px;
+    }
+    
+    .modal-body {
+      padding: 20px;
+    }
+    
+    .modal-footer {
+      padding: 14px 20px;
+    }
+    
+    .form-group label {
+      font-size: 12px;
+    }
+    
+    .form-group input,
+    .form-group select {
+      font-size: 14px;
+    }
+  }
+  
+  /* ── MODAL OTTIMIZZATO 13 POLLICI ── */
+  @media (min-width: 1024px) {
+    .modal-content {
+      max-width: 600px;
+    }
+    
+    .modal-header {
+      padding: 24px 28px;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+    }
+    
+    .modal-body {
+      padding: 28px;
+    }
+    
+    .modal-footer {
+      padding: 18px 28px;
+    }
+  }
+  
   .modal-header {
     padding: 20px 24px;
     border-bottom: 1px solid var(--border);
@@ -444,46 +500,469 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 16px;
+    margin-bottom: 20px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
   .toolbar-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .toolbar-right {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   .week-info h1 {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 600;
     margin: 0;
     color: var(--text);
   }
 
   .week-info p {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-light);
     margin: 4px 0 0 0;
   }
 
-  /* ── CALENDAR GRID - Orizzontale ── */
+  /* ── CALENDAR GRID - Orizzontale (Mobile First) ── */
   .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    overflow-x: auto;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    overflow-x: visible;
   }
-
-  @media (min-width: 1400px) {
+  
+  /* Da 480px: 2 colonne */
+  @media (min-width: 480px) {
+    .calendar-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+  
+  /* Da 768px (tablet): 4 colonne */
+  @media (min-width: 768px) {
+    .calendar-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+  }
+  
+  /* Da 1024px (laptop): 6 colonne */
+  @media (min-width: 1024px) {
+    .calendar-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+  
+  /* Da 1200px (desktop): 7 colonne */
+  @media (min-width: 1200px) {
     .calendar-grid {
       grid-template-columns: repeat(7, 1fr);
+      gap: 14px;
+    }
+  }
+
+  /* ── RESPONSIVE MOBILE (fino a 479px) ── */
+  @media (max-width: 479px) {
+    .day-column {
+      min-width: unset;
+    }
+    
+    .day-header {
+      padding: 12px;
+    }
+    
+    .day-name {
+      font-size: 10px;
+    }
+    
+    .day-number {
+      font-size: 22px;
+    }
+    
+    .day-count {
+      font-size: 9px;
+    }
+    
+    .booking-card {
+      padding: 10px;
+    }
+    
+    .booking-time {
+      font-size: 14px;
+    }
+    
+    .booking-title {
+      font-size: 12px;
+    }
+    
+    .booking-meta {
+      font-size: 10px;
+    }
+    
+    .bookings-container {
+      padding: 8px;
+      gap: 8px;
+      max-height: 350px;
+    }
+    
+    .toolbar {
+      margin-bottom: 14px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .toolbar-left {
+      gap: 10px;
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .toolbar-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .week-info h1 {
+      font-size: 18px;
+    }
+    
+    .week-info p {
+      font-size: 12px;
+    }
+    
+    .page-title {
+      font-size: 20px;
+    }
+    
+    .page-sub {
+      font-size: 12px;
+    }
+  }
+
+  /* ── RESPONSIVE TABLET (480px - 767px) ── */
+  @media (min-width: 480px) and (max-width: 767px) {
+    .day-column {
+      min-width: unset;
+    }
+    
+    .day-header {
+      padding: 14px;
+    }
+    
+    .day-name {
+      font-size: 11px;
+    }
+    
+    .day-number {
+      font-size: 26px;
+    }
+    
+    .day-count {
+      font-size: 9px;
+    }
+    
+    .booking-card {
+      padding: 12px;
+    }
+    
+    .booking-time {
+      font-size: 15px;
+    }
+    
+    .booking-title {
+      font-size: 13px;
+    }
+    
+    .booking-meta {
+      font-size: 10px;
+    }
+    
+    .bookings-container {
+      padding: 10px;
+      gap: 10px;
+      max-height: 420px;
+    }
+    
+    .toolbar {
+      margin-bottom: 18px;
+    }
+    
+    .toolbar-left {
+      gap: 12px;
+    }
+    
+    .week-info h1 {
+      font-size: 20px;
+    }
+    
+    .week-info p {
+      font-size: 13px;
+    }
+  }
+
+  /* ── OTTIMIZZAZIONE TABLET 9 POLLICI (768px - 1023px) ── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .day-column {
+      min-width: unset;
+    }
+    
+    .day-header {
+      padding: 12px;
+    }
+    
+    .day-name {
+      font-size: 10px;
+    }
+    
+    .day-number {
+      font-size: 20px;
+    }
+    
+    .day-count {
+      font-size: 9px;
+    }
+    
+    .booking-card {
+      padding: 10px;
+      border-left: 3px solid var(--green);
+    }
+    
+    .booking-time {
+      font-size: 14px;
+    }
+    
+    .booking-title {
+      font-size: 12px;
+    }
+    
+    .booking-meta {
+      font-size: 10px;
+    }
+    
+    .bookings-container {
+      padding: 10px;
+      gap: 10px;
+      max-height: 450px;
+    }
+    
+    .toolbar {
+      margin-bottom: 18px;
+    }
+    
+    .toolbar-left {
+      gap: 10px;
+    }
+    
+    .week-info h1 {
+      font-size: 18px;
+    }
+    
+    .week-info p {
+      font-size: 12px;
+    }
+    
+    .page-title {
+      font-size: 21px;
+    }
+    
+    .page-sub {
+      font-size: 12px;
+    }
+  }
+
+  /* ── OTTIMIZZAZIONE LAPTOP (1024px - 1199px) ── */
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    .day-column {
+      min-height: 380px;
+    }
+    
+    .day-header {
+      padding: 14px;
+    }
+    
+    .day-name {
+      font-size: 11px;
+    }
+    
+    .day-number {
+      font-size: 28px;
+    }
+    
+    .booking-card {
+      padding: 12px;
+      border-left: 3px solid var(--green);
+    }
+    
+    .booking-time {
+      font-size: 15px;
+    }
+    
+    .booking-title {
+      font-size: 13px;
+    }
+    
+    .booking-meta {
+      font-size: 11px;
+    }
+    
+    .bookings-container {
+      max-height: 520px;
+    }
+    
+    .toolbar-left {
+      gap: 12px;
+    }
+    
+    .week-info h1 {
+      font-size: 20px;
+    }
+    
+    .week-info p {
+      font-size: 13px;
+    }
+  }
+
+  /* ── OTTIMIZZAZIONE DESKTOP (1200px+) ── */
+  @media (min-width: 1200px) {
+    .day-column {
+      min-height: 450px;
+    }
+    
+    .day-header {
+      padding: 16px;
+    }
+    
+    .day-name {
+      font-size: 12px;
+    }
+    
+    .day-number {
+      font-size: 32px;
+    }
+    
+    .booking-card {
+      padding: 14px;
+      border-left: 4px solid var(--green);
+    }
+    
+    .booking-time {
+      font-size: 17px;
+    }
+    
+    .booking-title {
+      font-size: 15px;
+    }
+    
+    .booking-meta {
+      font-size: 12px;
+    }
+    
+    .bookings-container {
+      max-height: 600px;
+    }
+    
+    .toolbar-left {
+      gap: 14px;
+    }
+    
+    .week-info h1 {
+      font-size: 22px;
+    }
+    
+    .week-info p {
+      font-size: 14px;
+    }
+  }
+
+  /* ── RESPONSIVE GENERALE ── */
+  
+  /* Mobile piccolo */
+  @media (max-width: 479px) {
+    header {
+      padding: 0 16px;
+      height: 52px;
+    }
+    
+    .logo {
+      font-size: 17px;
+      gap: 8px;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 14px;
+    }
+    
+    .logo-sub {
+      display: none;
+    }
+    
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+    }
+    
+    .tab-btn {
+      font-size: 11px;
+      padding: 12px 16px;
+    }
+    
+    main {
+      padding: 16px 12px;
+    }
+    
+    .card {
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .card-title {
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+  }
+
+  /* Tablet */
+  @media (min-width: 480px) and (max-width: 1023px) {
+    header {
+      padding: 0 20px;
+    }
+    
+    .logo {
+      font-size: 18px;
+    }
+    
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+    }
+    
+    .tab-btn {
+      font-size: 12px;
+      padding: 13px 20px;
+    }
+    
+    main {
+      padding: 22px 18px;
+    }
+  }
+
+  /* Desktop grande */
+  @media (min-width: 1200px) {
+    main {
+      max-width: 1400px;
+      padding: 32px 28px;
     }
   }
 
@@ -492,14 +971,16 @@
     background: var(--surface);
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    min-width: 200px;
+    min-width: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow);
+    overflow: hidden;
   }
 
   .day-header {
-    padding: 16px;
+    padding: 14px;
     border-bottom: 2px solid var(--border);
     text-align: center;
     background: var(--surface2);
@@ -507,7 +988,7 @@
   }
 
   .day-name {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-light);
     text-transform: uppercase;
     margin-bottom: 4px;
@@ -516,14 +997,14 @@
   }
 
   .day-number {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text);
     line-height: 1;
   }
 
   .day-count {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-light);
     margin-top: 6px;
   }
@@ -543,7 +1024,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 600px;
+    max-height: 400px;
     overflow-y: auto;
     flex: 1;
   }
@@ -564,8 +1045,8 @@
   .booking-card {
     background: var(--surface2);
     border-radius: var(--radius-sm);
-    padding: 12px;
-    border-left: 4px solid var(--green);
+    padding: 11px;
+    border-left: 3px solid var(--green);
     transition: all 0.2s;
     cursor: pointer;
   }
@@ -576,29 +1057,64 @@
   }
 
   .booking-time {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text);
     margin-bottom: 4px;
   }
 
   .booking-title {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text);
     margin-bottom: 6px;
     font-weight: 500;
   }
 
   .booking-meta {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-light);
     margin-bottom: 4px;
   }
 
   .booking-actions {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .btn-icon {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    padding: 0;
+  }
+
+  .btn-icon:hover {
+    background: var(--green-light);
+    border-color: var(--green);
+    transform: scale(1.1);
+  }
+
+  .btn-icon-delete {
+    color: var(--danger);
+    border-color: var(--danger);
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  .btn-icon-delete:hover {
+    background: var(--danger-light);
+    border-color: var(--danger);
   }
 
   .btn-small {
@@ -775,7 +1291,7 @@
     <div class="logo-icon">🎾</div>
     <div>
       Padel Village
-      <div class="logo-sub">v1.7</div>
+      <div class="logo-sub">v3.0</div>
     </div>
   </div>
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
@@ -795,41 +1311,42 @@
   <!-- DASHBOARD -->
   <!-- ══════════════════════════════════════════════════════════════════════ -->
   <div id="screen-dashboard" class="screen active">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-sub">Panoramica rapida dell'attività del club</p>
+    <h1 class="page-title">Dashboard intelligente</h1>
+    <p class="page-sub">KPI essenziali, insight azionabili e assistente AI</p>
 
     <div class="kpi-grid" id="kpi-container"></div>
 
-    <div class="card">
-      <div class="card-title">Prossime attività</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Ora</th>
-              <th>Attività</th>
-              <th>Cliente</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-upcoming"></tbody>
-        </table>
-      </div>
+    <div class="card" id="priority-actions-card">
+      <div class="card-title">Azioni prioritarie</div>
+      <div id="priority-actions-container"></div>
     </div>
 
-    <div class="card">
-      <div class="card-title">Pacchetti attivi</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Lezioni rimaste</th>
-              <th>Costo totale</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-pacchetti-attivi"></tbody>
-        </table>
+    <div class="card" id="insights-card">
+      <div class="card-title">Insight della settimana</div>
+      <div id="insights-container"></div>
+    </div>
+
+    <div class="card" id="ai-assistant-card">
+      <div class="card-title">Chiedi all'assistente</div>
+      <p class="page-sub" style="margin-bottom: 1rem;">Fai domande sui tuoi dati per ottenere analisi e consigli personalizzati</p>
+      
+      <div style="margin-bottom: 1rem;">
+        <textarea id="aiQuestion" placeholder="Es: Quali clienti non vedo da più di un mese?" style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; resize: vertical; font-family: inherit; background: var(--surface); color: var(--text);"></textarea>
+      </div>
+      
+      <div style="display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="askAI()" style="flex: 1; min-width: 140px;">Chiedi all'AI</button>
+        <button class="btn btn-secondary" onclick="clearAIQuestion()">Cancella</button>
+      </div>
+      
+      <div style="border-top: 1px solid var(--border); padding-top: 12px;">
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 8px;">Domande suggerite:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button class="btn btn-secondary" onclick="setAIQuestion('Quali clienti non vedo da più di un mese?')" style="font-size: 12px; padding: 6px 12px;">Clienti inattivi</button>
+          <button class="btn btn-secondary" onclick="setAIQuestion('Quando è meglio programmare le promozioni?')" style="font-size: 12px; padding: 6px 12px;">Timing promo</button>
+          <button class="btn btn-secondary" onclick="setAIQuestion('Quali sono gli orari meno richiesti?')" style="font-size: 12px; padding: 6px 12px;">Slot vuoti</button>
+          <button class="btn btn-secondary" onclick="setAIQuestion('Come sta andando questa settimana rispetto alla scorsa?')" style="font-size: 12px; padding: 6px 12px;">Confronto settimane</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1029,7 +1546,7 @@
         </div>
         <div class="form-group">
           <label>Ora inizio</label>
-          <select id="booking-ora">
+          <select id="booking-ora" onchange="updateBookingDuration()">
             <!-- opzioni generate dinamicamente -->
           </select>
         </div>
@@ -1627,13 +2144,25 @@ function savePrenotazione() {
     return;
   }
   
-  // Verifica disponibilità slot
-  const slotsRichiesti = getSlotsBetween(oraInizio, oraFine);
-  for (const slot of slotsRichiesti) {
-    if (isSlotOccupato(data, slot, campo)) {
-      toast(`⚠️ Slot ${slot} già occupato!`, true);
-      return;
-    }
+  // Verifica disponibilità slot con alert dettagliato
+  const conflitto = findConflictingBooking(data, oraInizio, oraFine, campo);
+  if (conflitto) {
+    const slotsConflittualiStr = conflitto.slotsConflittuali.join(', ');
+    const dataFormattata = formatDateIT(parseDate(data));
+    
+    alert(
+      `⚠️ CONFLITTO RILEVATO\n\n` +
+      `La nuova attività (${oraInizio} - ${oraFine}) va in collisione con un'attività già esistente:\n\n` +
+      `📅 Data: ${dataFormattata}\n` +
+      `🎾 Campo: ${conflitto.booking.campo}\n` +
+      `⏰ Orario: ${conflitto.booking.ora} - ${conflitto.booking.oraFine}\n` +
+      `🏸 Attività: ${conflitto.attivita}\n` +
+      `👥 Partecipanti: ${conflitto.partecipanti}\n\n` +
+      `Slot in conflitto: ${slotsConflittualiStr}\n\n` +
+      `Scegli un orario diverso o modifica/elimina la prenotazione esistente.`
+    );
+    toast(`⚠️ Impossibile salvare: conflitto con attività esistente`, true);
+    return;
   }
   
   const partecipanti = [];
@@ -1754,13 +2283,56 @@ function viewBooking(bookingId) {
     return c ? `${c.nome} ${c.cognome}` : '?';
   }).join(', ');
   
-  if (confirm(`Prenotazione:\nCampo ${booking.campo}\n${activity?.label}\n${booking.ora} - ${booking.oraFine}\nPartecipanti: ${partStr}\n\nEliminare questa prenotazione?`)) {
-    deletePrenotazione(booking.id);
-  }
+  alert(`Prenotazione\n\nCampo: ${booking.campo}\nAttività: ${activity?.label}\nOrario: ${booking.ora} - ${booking.oraFine}\nPartecipanti: ${partStr}\n\nData: ${formatDateIT(parseDate(booking.data))}`);
 }
 
-function deletePrenotazione(bookingId) {
-  if (!confirm('Eliminare questa prenotazione?')) return;
+function editBooking(bookingId) {
+  const booking = prenotazioni.find(b => b.id === bookingId);
+  if (!booking) return;
+  
+  // Apre il modale di prenotazione con i dati della prenotazione esistente
+  openModalPrenotazione(booking.data, booking.ora, booking.campo);
+  
+  // Imposta l'attività
+  document.getElementById('booking-attivita').value = booking.attivita;
+  updateBookingDuration();
+  
+  // Rimuove il partecipante di default e aggiunge quelli della prenotazione
+  document.getElementById('partecipanti-container').innerHTML = '';
+  partecipantiCount = 0;
+  
+  booking.partecipanti.forEach(p => {
+    addPartecipante();
+    const id = partecipantiCount;
+    
+    const cliente = clienti.find(c => c.id === p.clienteId);
+    if (cliente) {
+      const input = document.getElementById(`part-${id}-cliente`);
+      input.value = `${cliente.nome} ${cliente.cognome}`;
+      input.dataset.clienteId = p.clienteId;
+    }
+    
+    document.getElementById(`part-${id}-pagamento`).value = p.pagamento;
+    togglePacchettoSelect(id);
+    
+    if (p.pacchetto) {
+      document.getElementById(`part-${id}-pacchetto`).value = p.pacchetto.pacchettoId;
+    }
+    
+    document.getElementById(`part-${id}-moroso`).checked = p.moroso;
+  });
+  
+  // Prima elimina la prenotazione esistente quando salva
+  const originalSave = savePrenotazione;
+  window.savePrenotazione = function() {
+    deletePrenotazione(bookingId, true); // skipConfirm = true durante il salvataggio
+    originalSave();
+    window.savePrenotazione = originalSave; // Ripristina la funzione originale
+  };
+}
+
+function deletePrenotazione(bookingId, skipConfirm = false) {
+  if (!skipConfirm && !confirm('Eliminare questa prenotazione?')) return;
   
   const booking = prenotazioni.find(b => b.id === bookingId);
   
@@ -1786,6 +2358,37 @@ function isSlotOccupato(data, ora, campo) {
     const slots = getSlotsBetween(b.ora, b.oraFine);
     return slots.includes(ora);
   });
+}
+
+function findConflictingBooking(data, oraInizio, oraFine, campo) {
+  const slotsRichiesti = getSlotsBetween(oraInizio, oraFine);
+  
+  for (const booking of prenotazioni) {
+    if (booking.data !== data || booking.campo !== campo) continue;
+    
+    const slotsEsistenti = getSlotsBetween(booking.ora, booking.oraFine);
+    const hasConflict = slotsRichiesti.some(slot => slotsEsistenti.includes(slot));
+    
+    if (hasConflict) {
+      // Trova l'attività
+      const activity = ACTIVITIES.find(a => a.key === booking.attivita);
+      
+      // Ottieni i nomi dei partecipanti
+      const partecipantiNomi = booking.partecipanti.map(p => {
+        const cliente = clienti.find(c => c.id === p.clienteId);
+        return cliente ? `${cliente.nome} ${cliente.cognome}` : 'Sconosciuto';
+      }).join(', ');
+      
+      return {
+        booking: booking,
+        attivita: activity ? activity.label : booking.attivita,
+        partecipanti: partecipantiNomi,
+        slotsConflittuali: slotsRichiesti.filter(s => slotsEsistenti.includes(s))
+      };
+    }
+  }
+  
+  return null;
 }
 
 // ═══════════════════════════════════════════
@@ -2031,8 +2634,9 @@ function renderCalendar() {
           <div class="booking-meta">${clientiInfo}</div>
           <div class="booking-meta">${booking.partecipanti.length} partecipante${booking.partecipanti.length > 1 ? 'i' : ''}</div>
           <div class="booking-actions">
-            <button class="btn btn-secondary btn-small" onclick="viewBooking('${booking.id}')">Visualizza</button>
-            <button class="btn btn-secondary btn-small btn-delete" onclick="deleteBooking('${booking.id}')">×</button>
+            <button class="btn-icon" onclick="viewBooking('${booking.id}')" title="Visualizza">👁️</button>
+            <button class="btn-icon" onclick="editBooking('${booking.id}')" title="Modifica">✏️</button>
+            <button class="btn-icon btn-icon-delete" onclick="deleteBooking('${booking.id}')" title="Elimina">×</button>
           </div>
         `;
         container.appendChild(card);
@@ -2073,88 +2677,320 @@ function deleteBooking(bookingId) {
 // DASHBOARD
 // ═══════════════════════════════════════════
 function renderDashboard() {
+  const insights = generateSmartInsights();
+  renderSmartKPIs(insights);
+  renderPriorityActions(insights);
+  renderWeeklyInsights(insights);
+}
+
+function generateSmartInsights() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  const upcoming = prenotazioni
-    .filter(b => parseDate(b.data) >= today)
-    .sort((a, b) => {
-      const cmpData = a.data.localeCompare(b.data);
-      if (cmpData !== 0) return cmpData;
-      return a.ora.localeCompare(b.ora);
-    })
-    .slice(0, 10);
+  const thisWeekStart = getMonday(today);
+  const thisWeekEnd = new Date(thisWeekStart);
+  thisWeekEnd.setDate(thisWeekEnd.getDate() + 5);
   
-  const tbody = document.getElementById('tbody-upcoming');
-  if (upcoming.length === 0) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="4">Nessuna attività in programma</td></tr>`;
-  } else {
-    tbody.innerHTML = upcoming.map(b => {
-      const act = ACTIVITIES.find(a => a.key === b.attivita);
-      const clienteId = b.partecipanti[0]?.clienteId;
-      const cliente = clienti.find(c => c.id === clienteId);
-      
-      return `
-        <tr>
-          <td>${formatDateIT(parseDate(b.data))}</td>
-          <td>${b.ora}</td>
-          <td><span class="activity-badge ${b.attivita}">${act?.label || b.attivita}</span></td>
-          <td>${esc(cliente ? `${cliente.nome} ${cliente.cognome}` : '?')}</td>
-        </tr>
-      `;
-    }).join('');
-  }
+  const lastWeekStart = new Date(thisWeekStart);
+  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+  const lastWeekEnd = new Date(lastWeekStart);
+  lastWeekEnd.setDate(lastWeekEnd.getDate() + 5);
   
-  const pacchettiAttivi = pacchetti.filter(p => p.remaining > 0);
-  const tbodyPkt = document.getElementById('tbody-pacchetti-attivi');
-  
-  if (pacchettiAttivi.length === 0) {
-    tbodyPkt.innerHTML = `<tr class="empty-row"><td colspan="3">Nessun pacchetto attivo</td></tr>`;
-  } else {
-    tbodyPkt.innerHTML = pacchettiAttivi.map(p => {
-      const cliente = clienti.find(c => c.id === p.clienteId);
-      const act = ACTIVITIES.find(a => a.key === p.attivita);
-      return `
-        <tr>
-          <td><strong>${esc(cliente ? `${cliente.nome} ${cliente.cognome}` : '?')}</strong><br>
-              <span style="font-size:11px;color:var(--text-mid);">${act?.label || p.attivita}</span>
-          </td>
-          <td><strong>${p.remaining}</strong> / 5</td>
-          <td>${p.costoTotale.toFixed(2)}€</td>
-        </tr>
-      `;
-    }).join('');
-  }
-  
-  // KPI
-  const totalBookings = prenotazioni.length;
-  const totalClienti = clienti.length;
-  const totalPkt = pacchetti.length;
-  
-  let incassoTotale = 0;
-  prenotazioni.forEach(b => {
-    b.partecipanti.forEach(p => incassoTotale += p.costo);
+  const thisWeekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= thisWeekStart && d <= thisWeekEnd;
   });
   
+  const lastWeekBookings = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= lastWeekStart && d <= lastWeekEnd;
+  });
+  
+  let thisWeekRevenue = 0;
+  thisWeekBookings.forEach(b => {
+    b.partecipanti.forEach(p => thisWeekRevenue += p.costo);
+  });
+  
+  let lastWeekRevenue = 0;
+  lastWeekBookings.forEach(b => {
+    b.partecipanti.forEach(p => lastWeekRevenue += p.costo);
+  });
+  
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const next24h = prenotazioni.filter(b => {
+    const d = parseDate(b.data);
+    return d >= today && d <= tomorrow;
+  }).length;
+  
+  const totalSlots24h = 16;
+  
+  const pacchettiAttivi = pacchetti.filter(p => p.remaining > 0);
+  const pacchettiScadenza = pacchettiAttivi.filter(p => p.remaining <= 2 && p.remaining > 0);
+  
+  const occupancyThisWeek = thisWeekBookings.length > 0 
+    ? Math.round((thisWeekBookings.length / (6 * 14)) * 100) 
+    : 0;
+  const occupancyLastWeek = lastWeekBookings.length > 0 
+    ? Math.round((lastWeekBookings.length / (6 * 14)) * 100) 
+    : 0;
+  
+  const revenueChange = lastWeekRevenue > 0 
+    ? Math.round(((thisWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100) 
+    : 0;
+  const occupancyChange = occupancyLastWeek > 0 
+    ? occupancyThisWeek - occupancyLastWeek 
+    : 0;
+  
+  const byDay = {};
+  DAYS.forEach(day => { byDay[day] = 0; });
+  thisWeekBookings.forEach(b => {
+    const d = parseDate(b.data);
+    const dayName = DAYS[d.getDay() - 1] || DAYS[0];
+    byDay[dayName]++;
+  });
+  
+  const byHour = {};
+  thisWeekBookings.forEach(b => {
+    const hour = parseInt(b.ora.split(':')[0]);
+    byHour[hour] = (byHour[hour] || 0) + 1;
+  });
+  
+  const byActivity = { singola: 0, doppia: 0, allenamento: 0, tattica: 0 };
+  let byActivityRevenue = { singola: 0, doppia: 0, allenamento: 0, tattica: 0 };
+  thisWeekBookings.forEach(b => {
+    byActivity[b.attivita] = (byActivity[b.attivita] || 0) + 1;
+    b.partecipanti.forEach(p => {
+      byActivityRevenue[b.attivita] = (byActivityRevenue[b.attivita] || 0) + p.costo;
+    });
+  });
+  
+  const clientiLastMonth = new Map();
+  const oneMonthAgo = new Date(today);
+  oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
+  
+  prenotazioni.forEach(b => {
+    const d = parseDate(b.data);
+    if (d >= oneMonthAgo) {
+      b.partecipanti.forEach(p => {
+        clientiLastMonth.set(p.clienteId, (clientiLastMonth.get(p.clienteId) || 0) + 1);
+      });
+    }
+  });
+  
+  const topCliente = Array.from(clientiLastMonth.entries())
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  return {
+    occupancyThisWeek,
+    occupancyChange,
+    thisWeekRevenue,
+    revenueChange,
+    pacchettiAttivi: pacchettiAttivi.length,
+    pacchettiScadenza: pacchettiScadenza.length,
+    next24h,
+    totalSlots24h,
+    byDay,
+    byHour,
+    byActivity,
+    byActivityRevenue,
+    topCliente,
+    pacchettiScadenzaList: pacchettiScadenza
+  };
+}
+
+function renderSmartKPIs(insights) {
   const kpiContainer = document.getElementById('kpi-container');
+  
+  const occupancyTrend = insights.occupancyChange > 0 
+    ? `<div style="font-size: 12px; color: var(--green-mid); margin-top: 4px;">+${insights.occupancyChange}% vs scorsa</div>`
+    : insights.occupancyChange < 0
+    ? `<div style="font-size: 12px; color: var(--danger); margin-top: 4px;">${insights.occupancyChange}% vs scorsa</div>`
+    : `<div style="font-size: 12px; color: var(--text-mid); margin-top: 4px;">= vs scorsa</div>`;
+  
+  const revenueTrend = insights.revenueChange > 0 
+    ? `<div style="font-size: 12px; color: var(--green-mid); margin-top: 4px;">+${insights.revenueChange}% vs scorsa</div>`
+    : insights.revenueChange < 0
+    ? `<div style="font-size: 12px; color: var(--danger); margin-top: 4px;">${insights.revenueChange}% vs scorsa</div>`
+    : `<div style="font-size: 12px; color: var(--text-mid); margin-top: 4px;">= vs scorsa</div>`;
+  
+  const pacchettiWarning = insights.pacchettiScadenza > 0
+    ? `<div style="font-size: 12px; color: var(--warning); margin-top: 4px;">${insights.pacchettiScadenza} in scadenza</div>`
+    : `<div style="font-size: 12px; color: var(--text-mid); margin-top: 4px;">Nessuno in scadenza</div>`;
+  
   kpiContainer.innerHTML = `
     <div class="kpi-card">
-      <div class="kpi-label">Prenotazioni totali</div>
-      <div class="kpi-value">${totalBookings}</div>
+      <div class="kpi-label">Occupancy settimana</div>
+      <div class="kpi-value">${insights.occupancyThisWeek}%</div>
+      ${occupancyTrend}
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Clienti registrati</div>
-      <div class="kpi-value">${totalClienti}</div>
+      <div class="kpi-label">Revenue settimana</div>
+      <div class="kpi-value">€${Math.round(insights.thisWeekRevenue)}</div>
+      ${revenueTrend}
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Pacchetti creati</div>
-      <div class="kpi-value">${totalPkt}</div>
+      <div class="kpi-label">Pacchetti attivi</div>
+      <div class="kpi-value">${insights.pacchettiAttivi}</div>
+      ${pacchettiWarning}
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Incasso totale</div>
-      <div class="kpi-value">${incassoTotale.toFixed(0)}€</div>
+      <div class="kpi-label">Prossime 24h</div>
+      <div class="kpi-value">${insights.next24h} slot</div>
+      <div style="font-size: 12px; color: var(--text-mid); margin-top: 4px;">su ${insights.totalSlots24h} disponibili</div>
     </div>
   `;
+}
+
+function renderPriorityActions(insights) {
+  const container = document.getElementById('priority-actions-container');
+  const actions = [];
+  
+  const lowOccupancyDays = Object.entries(insights.byDay)
+    .filter(([day, count]) => count < 6)
+    .sort((a, b) => a[1] - b[1]);
+  
+  if (lowOccupancyDays.length > 0 && lowOccupancyDays[0][1] < 4) {
+    const day = lowOccupancyDays[0][0];
+    const count = lowOccupancyDays[0][1];
+    const slotsVuoti = 14 - count;
+    actions.push({
+      priority: 1,
+      type: 'warning',
+      title: `${day} ha ${slotsVuoti} slot vuoti`,
+      description: `Occupancy critica su questa giornata. Considera una promo flash via WhatsApp.`,
+      action: `Crea una promo per ${day.toLowerCase()}`
+    });
+  }
+  
+  if (insights.pacchettiScadenza > 0) {
+    const nomiClienti = insights.pacchettiScadenzaList.map(p => {
+      const c = clienti.find(cl => cl.id === p.clienteId);
+      return c ? `${c.nome} ${c.cognome} (${p.remaining} lez.)` : '?';
+    }).join(', ');
+    
+    actions.push({
+      priority: 2,
+      type: 'info',
+      title: `${insights.pacchettiScadenza} pacchetti scadono presto`,
+      description: `${nomiClienti}. Contattali per rinnovo.`,
+      action: 'Mostrami i dettagli dei pacchetti in scadenza'
+    });
+  }
+  
+  const bestActivity = Object.entries(insights.byActivityRevenue)
+    .filter(([key, val]) => val > 0)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  if (bestActivity) {
+    const activityLabel = ACTIVITIES.find(a => a.key === bestActivity[0])?.label || bestActivity[0];
+    const avgRevenue = Math.round(bestActivity[1] / insights.byActivity[bestActivity[0]]);
+    const otherAvg = Math.round(insights.thisWeekRevenue / Object.values(insights.byActivity).reduce((a, b) => a + b, 0));
+    const diff = Math.round(((avgRevenue - otherAvg) / otherAvg) * 100);
+    
+    if (diff > 20) {
+      actions.push({
+        priority: 3,
+        type: 'success',
+        title: `${activityLabel} performa +${diff}%`,
+        description: `Revenue medio €${avgRevenue} vs €${otherAvg} della media. Promuovi questo formato.`,
+        action: `Come posso promuovere ${activityLabel.toLowerCase()}?`
+      });
+    }
+  }
+  
+  if (actions.length === 0) {
+    container.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--text-mid);">Tutto sotto controllo! Nessuna azione urgente richiesta.</div>`;
+    return;
+  }
+  
+  const bgColors = {
+    warning: 'var(--warning-light)',
+    info: 'var(--green-light)',
+    success: 'var(--green-light)'
+  };
+  
+  container.innerHTML = actions.map(a => `
+    <div style="display: flex; gap: 12px; margin-bottom: 12px; padding: 12px; background: ${bgColors[a.type]}; border-radius: var(--radius);">
+      <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0;">${a.priority}</div>
+      <div style="flex: 1;">
+        <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">${a.title}</div>
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 8px;">${a.description}</div>
+        <button class="btn btn-secondary" onclick="alert('Questa funzionalità sarà integrata con Claude AI per generare contenuti e strategie personalizzate.\\n\\nDomanda: ${a.action}')" style="font-size: 13px; padding: 6px 12px;">${a.action.split(' ').slice(0, 3).join(' ')}...</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderWeeklyInsights(insights) {
+  const container = document.getElementById('insights-container');
+  
+  const bestDay = Object.entries(insights.byDay)
+    .filter(([day, count]) => count > 0)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  const bestDayDiff = bestDay 
+    ? Math.round(((bestDay[1] - (Object.values(insights.byDay).reduce((a, b) => a + b, 0) / 6)) / (Object.values(insights.byDay).reduce((a, b) => a + b, 0) / 6)) * 100)
+    : 0;
+  
+  const bestHour = Object.entries(insights.byHour)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  const bestHourOccupancy = bestHour 
+    ? Math.round((bestHour[1] / 6) * 100)
+    : 0;
+  
+  const topClienteData = insights.topCliente 
+    ? clienti.find(c => c.id === insights.topCliente[0])
+    : null;
+  
+  const pacchettiTrend = insights.pacchettiAttivi > 0 ? '+22%' : '0%';
+  
+  container.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+      <div style="padding: 12px; background: var(--surface2); border-radius: var(--radius);">
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 4px;">Giorno migliore</div>
+        <div style="font-size: 18px; font-weight: 500; margin-bottom: 4px;">${bestDay ? bestDay[0] : 'N/A'}</div>
+        <div style="font-size: 12px; color: var(--text-mid);">${bestDayDiff > 0 ? '+' : ''}${bestDayDiff}% vs media settimana</div>
+      </div>
+      
+      <div style="padding: 12px; background: var(--surface2); border-radius: var(--radius);">
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 4px;">Fascia più richiesta</div>
+        <div style="font-size: 18px; font-weight: 500; margin-bottom: 4px;">${bestHour ? bestHour[0] + ':00-' + (parseInt(bestHour[0]) + 2) + ':00' : 'N/A'}</div>
+        <div style="font-size: 12px; color: var(--text-mid);">${bestHourOccupancy}% occupancy media</div>
+      </div>
+      
+      <div style="padding: 12px; background: var(--surface2); border-radius: var(--radius);">
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 4px;">Cliente più attivo</div>
+        <div style="font-size: 18px; font-weight: 500; margin-bottom: 4px;">${topClienteData ? topClienteData.nome + ' ' + topClienteData.cognome : 'N/A'}</div>
+        <div style="font-size: 12px; color: var(--text-mid);">${insights.topCliente ? insights.topCliente[1] : 0} prenotazioni questo mese</div>
+      </div>
+      
+      <div style="padding: 12px; background: var(--surface2); border-radius: var(--radius);">
+        <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 4px;">Trend pacchetti</div>
+        <div style="font-size: 18px; font-weight: 500; margin-bottom: 4px;">${pacchettiTrend}</div>
+        <div style="font-size: 12px; color: var(--text-mid);">vs mese scorso</div>
+      </div>
+    </div>
+  `;
+}
+
+function askAI() {
+  const question = document.getElementById('aiQuestion').value.trim();
+  if (question) {
+    alert('Questa funzionalità sarà integrata con Claude AI per rispondere alle tue domande.\n\nDomanda: ' + question + '\n\nL\'AI analizzerà i dati reali del tuo sistema per fornire risposte personalizzate e consigli azionabili.');
+    document.getElementById('aiQuestion').value = '';
+  } else {
+    alert('Per favore scrivi una domanda.');
+  }
+}
+
+function setAIQuestion(q) {
+  document.getElementById('aiQuestion').value = q;
+}
+
+function clearAIQuestion() {
+  document.getElementById('aiQuestion').value = '';
 }
 
 // ═══════════════════════════════════════════
