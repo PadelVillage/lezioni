@@ -439,7 +439,7 @@
     justify-content: flex-end;
   }
 
-  /* ── CALENDAR ── */
+  /* ── CALENDAR LAYOUT 3: CARD GIORNALIERE ── */
   .week-nav {
     display: flex;
     align-items: center;
@@ -458,61 +458,136 @@
     padding: 8px 14px;
   }
 
+  /* Filtri rapidi */
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .filter-chips::-webkit-scrollbar { height: 2px; }
+  .filter-chips::-webkit-scrollbar-thumb { background: var(--border); border-radius: 1px; }
+  .filter-chip {
+    padding: 6px 12px;
+    font-size: 12px;
+    background: var(--surface);
+    color: var(--text);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-weight: normal;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .filter-chip:hover {
+    background: var(--surface2);
+    border-color: var(--green);
+  }
+  .filter-chip.active {
+    background: var(--green-light);
+    color: var(--green-dark);
+    border-color: var(--green);
+    font-weight: bold;
+  }
+
+  /* Card giorni */
   .calendar-grid {
-    display: grid;
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
   .cal-day {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
   }
   .cal-day-header {
     font-size: 13px;
-    font-weight: bold;
-    color: var(--green-dark);
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .cal-slots {
-    display: grid;
-    gap: 6px;
-  }
-  .cal-slot {
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+    padding: 12px;
+    border-bottom: 0.5px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid transparent;
+    transition: background 0.2s;
   }
-  .cal-slot.libero {
+  .cal-day-header:hover {
+    background: var(--surface2);
+  }
+  .cal-day-header .day-title {
+    flex: 1;
+  }
+  .cal-day-header .day-count {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-right: 8px;
+  }
+  .cal-day-header .expand-icon {
+    font-size: 18px;
+    color: var(--text-light);
+    transition: transform 0.2s;
+  }
+  .cal-day.expanded .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Slot chips */
+  .cal-slots {
+    display: none;
+    padding: 12px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .cal-day.expanded .cal-slots {
+    display: flex;
+  }
+  .slot-chip {
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 0.5px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  /* Slot libero */
+  .slot-chip.libero {
     background: var(--green-light);
     color: var(--green-dark);
     border-color: var(--green);
   }
-  .cal-slot.libero:hover {
+  .slot-chip.libero:hover {
     background: var(--green);
     color: #fff;
     box-shadow: var(--shadow);
   }
-  .cal-slot.occupato {
-    background: var(--surface2);
-    color: var(--text-mid);
-    cursor: not-allowed;
+  /* Slot occupato */
+  .slot-chip.occupato {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: var(--danger);
     opacity: 0.7;
+    cursor: default;
   }
-  .cal-slot .slot-time {
-    font-weight: bold;
+  /* Slot tua lezione */
+  .slot-chip.mia {
+    background: #e6f1fb;
+    color: #0c447c;
+    border-color: #378add;
   }
-  .cal-slot .slot-info {
-    font-size: 11px;
+  .slot-chip .slot-label {
+    display: block;
+    font-size: 10px;
     opacity: 0.8;
+    margin-top: 2px;
   }
 
   /* ── KPI DASHBOARD ── */
@@ -719,7 +794,7 @@
   <!-- ══════════════════════════════════════════════════════════════════════ -->
   <div id="screen-calendario" class="screen">
     <h1 class="page-title">Calendario</h1>
-    <p class="page-sub">Visualizza e gestisci le prenotazioni settimanali</p>
+    <p class="page-sub">Vista settimanale con card giornaliere</p>
 
     <div class="week-nav">
       <button class="btn btn-secondary" onclick="prevWeek()">← Prec</button>
@@ -730,6 +805,17 @@
     <button class="btn btn-accent" style="width:100%;margin-bottom:16px;" onclick="openModalPrenotazione()">
       + Nuova prenotazione
     </button>
+
+    <!-- Filtri rapidi -->
+    <div class="filter-chips">
+      <button class="filter-chip active" onclick="setFilter('tutti')">Tutti</button>
+      <button class="filter-chip" onclick="setFilter('liberi')">Solo liberi</button>
+      <button class="filter-chip" onclick="setFilter('mie')">Tue lezioni</button>
+      <button class="filter-chip" onclick="setFilter('mattina')">🌅 Mattina</button>
+      <button class="filter-chip" onclick="setFilter('pranzo')">🍝 Pranzo</button>
+      <button class="filter-chip" onclick="setFilter('pomeriggio')">☀️ Pomeriggio</button>
+      <button class="filter-chip" onclick="setFilter('sera')">🌙 Sera</button>
+    </div>
 
     <div class="calendar-grid" id="calendar-grid"></div>
   </div>
@@ -1717,6 +1803,56 @@ function selectPktCliente(clienteId, nome, cognome) {
 // ═══════════════════════════════════════════
 // CALENDAR
 // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// CALENDARIO - LAYOUT 3: CARD GIORNALIERE
+// ═══════════════════════════════════════════
+
+let activeFilter = 'tutti';
+
+function setFilter(filter) {
+  activeFilter = filter;
+  
+  // Aggiorna UI filtri
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  renderCalendar();
+}
+
+function matchesFilter(dayISO, ora) {
+  // Controlla se uno slot matcha il filtro attivo
+  
+  // Filtro fascia oraria
+  const h = parseInt(ora.split(':')[0]);
+  if (activeFilter === 'mattina' && (h < 7 || h >= 12)) return false;
+  if (activeFilter === 'pranzo' && (h < 12 || h >= 15)) return false;
+  if (activeFilter === 'pomeriggio' && (h < 15 || h >= 18)) return false;
+  if (activeFilter === 'sera' && (h < 18 || h >= 23)) return false;
+  
+  // Filtro disponibilità
+  const occupato = isSlotOccupato(dayISO, ora, 1);
+  if (activeFilter === 'liberi' && occupato) return false;
+  
+  // Filtro "tue lezioni" - TODO: implementare logica utente
+  if (activeFilter === 'mie') {
+    if (!occupato) return false;
+    // Per ora mostriamo tutte le occupate, in futuro filtrare per utente
+  }
+  
+  return true;
+}
+
+function getSlotBooking(dayISO, ora, campo) {
+  // Trova la prenotazione che occupa questo slot
+  return prenotazioni.find(b => {
+    if (b.data !== dayISO || b.campo !== campo) return false;
+    const slots = getSlotsBetween(b.ora, b.oraFine);
+    return slots.includes(ora);
+  });
+}
+
 function renderCalendar() {
   if (!currentWeekStart) {
     currentWeekStart = getMonday(new Date());
@@ -1737,57 +1873,127 @@ function renderCalendar() {
     day.setDate(day.getDate() + i);
     const dayISO = formatDateISO(day);
     
-    const dayDiv = document.createElement('div');
-    dayDiv.className = 'cal-day';
+    // Crea card giorno
+    const dayCard = document.createElement('div');
+    dayCard.className = 'cal-day';
     
+    // Header card (cliccabile per espandere/chiudere)
     const header = document.createElement('div');
     header.className = 'cal-day-header';
-    header.textContent = `${DAYS[i]} ${formatDateIT(day)}`;
-    dayDiv.appendChild(header);
     
+    // Conta slot disponibili per questo giorno
+    let slotsDisponibili = 0;
+    HOURS.forEach(ora => {
+      if (!isSlotOccupato(dayISO, ora, 1) && matchesFilter(dayISO, ora)) {
+        slotsDisponibili++;
+      }
+    });
+    
+    header.innerHTML = `
+      <div class="day-title">${DAYS[i]} ${formatDateIT(day)}</div>
+      <div class="day-count">${slotsDisponibili} slot disponibili</div>
+      <div class="expand-icon">▼</div>
+    `;
+    
+    header.onclick = () => {
+      dayCard.classList.toggle('expanded');
+      haptic(20);
+    };
+    
+    dayCard.appendChild(header);
+    
+    // Slots chips container
     const slotsDiv = document.createElement('div');
     slotsDiv.className = 'cal-slots';
     
-    CAMPI.forEach(campo => {
-      HOURS.forEach(ora => {
-        const occupato = isSlotOccupato(dayISO, ora, campo);
+    // Genera chips per questo giorno
+    let i_slot = 0;
+    while (i_slot < HOURS.length) {
+      const ora = HOURS[i_slot];
+      
+      // Salta se non matcha il filtro
+      if (!matchesFilter(dayISO, ora)) {
+        i_slot++;
+        continue;
+      }
+      
+      const booking = getSlotBooking(dayISO, ora, 1);
+      
+      if (booking) {
+        // SLOT OCCUPATO - crea chip largo per tutta la durata
+        const slotsOccupati = getSlotsBetween(booking.ora, booking.oraFine);
+        const isInizio = slotsOccupati[0] === ora;
         
-        const slot = document.createElement('div');
-        slot.className = `cal-slot ${occupato ? 'occupato' : 'libero'}`;
-        
-        if (occupato) {
-          const booking = prenotazioni.find(b => {
-            if (b.data !== dayISO || b.campo !== campo) return false;
-            const slots = getSlotsBetween(b.ora, b.oraFine);
-            return slots.includes(ora);
-          });
+        if (isInizio) {
+          // Crea chip largo
+          const chip = document.createElement('div');
+          const activity = ACTIVITIES.find(a => a.key === booking.attivita);
+          const clienteId = booking.partecipanti[0]?.clienteId;
+          const cliente = clienti.find(c => c.id === clienteId);
+          const nomeCliente = cliente ? `${cliente.nome.charAt(0)}.${cliente.cognome.charAt(0)}.` : '?';
           
-          if (booking) {
-            const act = ACTIVITIES.find(a => a.key === booking.attivita);
-            slot.innerHTML = `
-              <span class="slot-time">${ora}</span>
-              <span class="slot-info">${act?.label || booking.attivita}</span>
-            `;
-            slot.onclick = () => {
-              if (confirm('Visualizzare dettagli prenotazione?')) {
-                alert(`Prenotazione:\n${act?.label}\n${booking.partecipanti.length} partecipante/i\nClicca Elimina per cancellare`);
-                if (confirm('Eliminare questa prenotazione?')) {
-                  deletePrenotazione(booking.id);
-                }
+          // TODO: verificare se è "tua lezione" basandosi su utente loggato
+          const isMia = false; // per ora sempre false
+          
+          chip.className = `slot-chip ${isMia ? 'mia' : 'occupato'}`;
+          chip.innerHTML = `
+            ${booking.ora}─${booking.oraFine}
+            <span class="slot-label">${nomeCliente} • ${activity?.label || booking.attivita}</span>
+          `;
+          
+          chip.onclick = () => {
+            if (confirm('Visualizzare dettagli prenotazione?')) {
+              const partStr = booking.partecipanti.map(p => {
+                const c = clienti.find(cl => cl.id === p.clienteId);
+                return c ? `${c.nome} ${c.cognome}` : '?';
+              }).join(', ');
+              
+              alert(`Prenotazione:\n${activity?.label}\n${booking.ora} - ${booking.oraFine}\nPartecipanti: ${partStr}`);
+              
+              if (confirm('Eliminare questa prenotazione?')) {
+                deletePrenotazione(booking.id);
               }
-            };
-          }
-        } else {
-          slot.innerHTML = `<span class="slot-time">${ora}</span>`;
-          slot.onclick = () => openModalPrenotazione(dayISO, ora, campo);
+            }
+          };
+          
+          slotsDiv.appendChild(chip);
         }
         
-        slotsDiv.appendChild(slot);
-      });
-    });
+        // Salta tutti gli slot occupati da questa prenotazione
+        i_slot += slotsOccupati.length;
+        
+      } else {
+        // SLOT LIBERO - verifica se ci sono più slot liberi consecutivi
+        let slotLiberiConsecutivi = 1;
+        while (
+          i_slot + slotLiberiConsecutivi < HOURS.length &&
+          !isSlotOccupato(dayISO, HOURS[i_slot + slotLiberiConsecutivi], 1) &&
+          matchesFilter(dayISO, HOURS[i_slot + slotLiberiConsecutivi])
+        ) {
+          slotLiberiConsecutivi++;
+        }
+        
+        // Crea chip (singolo o doppio)
+        const chip = document.createElement('div');
+        chip.className = 'slot-chip libero';
+        
+        if (slotLiberiConsecutivi >= 2) {
+          const oraFine = HOURS[i_slot + slotLiberiConsecutivi - 1];
+          const oraFineNext = addMinutesToTime(oraFine, 30);
+          chip.textContent = `${ora}─${oraFineNext}`;
+        } else {
+          chip.textContent = ora;
+        }
+        
+        chip.onclick = () => openModalPrenotazione(dayISO, ora, 1);
+        
+        slotsDiv.appendChild(chip);
+        i_slot += slotLiberiConsecutivi;
+      }
+    }
     
-    dayDiv.appendChild(slotsDiv);
-    grid.appendChild(dayDiv);
+    dayCard.appendChild(slotsDiv);
+    grid.appendChild(dayCard);
   }
 }
 
