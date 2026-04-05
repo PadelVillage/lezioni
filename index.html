@@ -439,137 +439,200 @@
     justify-content: flex-end;
   }
 
-  /* ── CALENDAR LAYOUT 3: CARD GIORNALIERE ── */
-  .week-nav {
+  /* ── TOOLBAR ── */
+  .toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 18px;
-    gap: 12px;
-  }
-  .week-label {
-    font-size: 15px;
-    font-weight: bold;
-    color: var(--green-dark);
-    flex: 1;
-    text-align: center;
-  }
-  .week-nav button {
-    padding: 8px 14px;
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
   }
 
-  /* ── CALENDARIO SETTIMANALE A GRIGLIA ── */
-  .calendar-grid {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow-x: auto;
-    box-shadow: var(--shadow);
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  
-  .cal-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 700px;
+
+  .toolbar-right {
+    display: flex;
+    gap: 8px;
   }
-  
-  .cal-table th {
-    background: var(--green-light);
-    color: var(--green-dark);
-    font-size: 12px;
+
+  .week-info h1 {
+    font-size: 20px;
     font-weight: 600;
-    text-align: center;
-    padding: 10px 8px;
-    border: 0.5px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    margin: 0;
+    color: var(--text);
   }
-  
-  .cal-table th.time-col {
-    background: var(--surface2);
-    color: var(--text-mid);
-    min-width: 60px;
+
+  .week-info p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 4px 0 0 0;
   }
-  
-  .cal-table td {
-    border: 0.5px solid var(--border);
-    padding: 0;
-    height: 50px;
-    min-height: 50px;
-    vertical-align: top;
-    text-align: center;
-    position: relative;
+
+  /* ── CALENDAR GRID - Orizzontale ── */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    overflow-x: auto;
   }
-  
-  .cal-table td.time-cell {
-    background: var(--surface2);
-    color: var(--text-mid);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 8px 4px;
-    vertical-align: middle;
+
+  @media (min-width: 1400px) {
+    .calendar-grid {
+      grid-template-columns: repeat(7, 1fr);
+    }
   }
-  
-  .cal-slot {
-    width: 100%;
-    height: 100%;
-    min-height: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
+
+  /* ── DAY COLUMN ── */
+  .day-column {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    min-width: 200px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
+    box-shadow: var(--shadow);
   }
-  
-  .cal-slot.libero {
-    background: var(--green-light);
-    border: 1px dashed var(--green);
-  }
-  
-  .cal-slot.libero:hover {
-    background: var(--green);
-    border-color: var(--green-dark);
-    box-shadow: inset 0 0 0 2px var(--green-dark);
-  }
-  
-  .cal-slot.libero:hover::after {
-    content: '+';
-    position: absolute;
-    font-size: 24px;
-    color: #fff;
-    font-weight: bold;
-  }
-  
-  .cal-slot.occupato {
-    background: var(--danger-light);
-    border: 1px solid var(--danger);
-    cursor: default;
-  }
-  
-  .cal-slot.occupato:hover {
-    background: var(--danger);
-  }
-  
-  .cal-slot-info {
-    font-size: 10px;
-    color: var(--text);
+
+  .day-header {
+    padding: 16px;
+    border-bottom: 2px solid var(--border);
     text-align: center;
-    line-height: 1.2;
-    word-break: break-word;
-    padding: 2px;
+    background: var(--surface2);
+    border-radius: var(--radius) var(--radius) 0 0;
   }
-  
-  .cal-slot.occupato .cal-slot-info {
-    color: var(--danger);
+
+  .day-name {
+    font-size: 12px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 4px;
     font-weight: 600;
+    letter-spacing: 0.05em;
   }
-  
-  .cal-slot.occupato:hover .cal-slot-info {
-    color: #fff;
+
+  .day-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .day-count {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  .day-header.empty .day-number {
+    color: var(--text-light);
+  }
+
+  .day-header.empty .day-count {
+    color: var(--text-light);
+    opacity: 0.7;
+  }
+
+  /* ── BOOKING CARDS ── */
+  .bookings-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 600px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .bookings-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .bookings-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .bookings-container::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .booking-card {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    border-left: 4px solid var(--green);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .booking-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .booking-time {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .booking-title {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .booking-meta {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+
+  .booking-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .btn-small {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    flex: 1;
+  }
+
+  .btn-delete {
+    color: var(--danger);
+    border-color: var(--danger);
+    flex: 0 0 auto;
+    padding: 5px 10px;
+  }
+
+  .btn-delete:hover {
+    background: var(--danger-light);
+  }
+
+  /* ── EMPTY DAY ── */
+  .empty-day {
+    padding: 32px 20px;
+    text-align: center;
+  }
+
+  .empty-day-text {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  .btn-add-booking {
+    width: 100%;
   }
 
   /* ── KPI DASHBOARD ── */
@@ -776,19 +839,31 @@
   <!-- ══════════════════════════════════════════════════════════════════════ -->
   <div id="screen-calendario" class="screen">
     <h1 class="page-title">Prenota</h1>
-    <p class="page-sub">Calendario settimanale - Campo 1</p>
+    <p class="page-sub">Calendario settimanale - Vista orizzontale</p>
 
-    <div class="week-nav">
-      <button class="btn btn-secondary" onclick="prevWeek()">← Prec</button>
-      <div class="week-label" id="week-label"></div>
-      <button class="btn btn-secondary" onclick="nextWeek()">Succ →</button>
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn btn-secondary" onclick="prevWeek()">← Prec</button>
+        <div class="week-info">
+          <h1 id="week-label">06 – 12 Aprile 2026</h1>
+          <p id="week-count">15 prenotazioni attive</p>
+        </div>
+        <button class="btn btn-secondary" onclick="nextWeek()">Succ →</button>
+      </div>
+      <div class="toolbar-right">
+        <button class="btn btn-primary" onclick="openBookingModal()">
+          <span>+</span>
+          <span>Prenota</span>
+        </button>
+        <button class="btn btn-secondary" onclick="goToToday()">Oggi</button>
+      </div>
     </div>
 
-    <button class="btn btn-accent" style="width:100%;margin-bottom:16px;" onclick="openModalPrenotazione()">
-      + Nuova prenotazione
-    </button>
-
-    <div id="calendar-grid"></div>
+    <!-- CALENDAR GRID -->
+    <div class="calendar-grid" id="calendar-grid">
+      <!-- Generato dinamicamente da JS -->
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════ -->
@@ -1860,79 +1935,113 @@ function getSlotBooking(dayISO, ora, campo = null) {
   });
 }
 
+// ═══════════════════════════════════════════
+// CALENDAR RENDERING - LAYOUT ORIZZONTALE
+// ═══════════════════════════════════════════
+
+function getWeekDates(startDate) {
+  const dates = [];
+  for (let i = 0; i < 6; i++) { // Solo 6 giorni: lunedì-sabato
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    dates.push(formatDateISO(date));
+  }
+  return dates;
+}
+
+function getDayNameFromDate(dateStr) {
+  const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+  return days[parseDate(dateStr).getDay()];
+}
+
 function renderCalendar() {
   if (!currentWeekStart) {
     currentWeekStart = getMonday(new Date());
   }
   
-  const weekEnd = new Date(currentWeekStart);
-  weekEnd.setDate(weekEnd.getDate() + 5); // Sabato (lunedì + 5 giorni)
-  
-  document.getElementById('week-label').textContent = 
-    `${formatDateIT(currentWeekStart)} – ${formatDateIT(weekEnd)}`;
-  
+  const weekDates = getWeekDates(currentWeekStart);
   const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+
+  // Update week label
+  const weekEnd = new Date(currentWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 5);
+  const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
+                      'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+  const month = monthNames[currentWeekStart.getMonth()];
+  const year = currentWeekStart.getFullYear();
   
-  // Crea la tabella
-  let html = '<table class="cal-table"><thead><tr>';
-  html += '<th class="time-col">Ora</th>';
+  const startDay = String(currentWeekStart.getDate()).padStart(2, '0');
+  const endDay = String(weekEnd.getDate()).padStart(2, '0');
   
-  // Header giorni (lunedì-sabato)
-  for (let i = 0; i < 6; i++) {
-    const day = new Date(currentWeekStart);
-    day.setDate(day.getDate() + i);
-    html += `<th>${DAYS[i]}<br>${formatDateIT(day)}</th>`;
-  }
+  document.getElementById('week-label').textContent = `${startDay} – ${endDay} ${month} ${year}`;
   
-  html += '</tr></thead><tbody>';
-  
-  // Righe per ogni slot orario
-  HOURS.forEach(ora => {
-    html += `<tr><td class="time-cell">${ora}</td>`;
+  // Conta prenotazioni totali della settimana
+  const weekBookings = prenotazioni.filter(b => weekDates.includes(b.data));
+  document.getElementById('week-count').textContent = `${weekBookings.length} prenotazioni attive`;
+
+  weekDates.forEach(dateStr => {
+    const dayBookings = prenotazioni.filter(b => b.data === dateStr).sort((a, b) => a.ora.localeCompare(b.ora));
+    const dayColumn = document.createElement('div');
+    dayColumn.className = 'day-column';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'day-header' + (dayBookings.length === 0 ? ' empty' : '');
+    header.innerHTML = `
+      <div class="day-name">${getDayNameFromDate(dateStr)}</div>
+      <div class="day-number">${parseDate(dateStr).getDate()}</div>
+      <div class="day-count">${dayBookings.length > 0 ? dayBookings.length + ' prenotazioni' : 'Nessuna'}</div>
+    `;
+    dayColumn.appendChild(header);
+
+    // Bookings
+    const container = document.createElement('div');
     
-    // Colonne per ogni giorno
-    for (let i = 0; i < 6; i++) {
-      const day = new Date(currentWeekStart);
-      day.setDate(day.getDate() + i);
-      const dayISO = formatDateISO(day);
-      
-      // Verifica se lo slot è occupato
-      const booking = prenotazioni.find(b => {
-        if (b.data !== dayISO || b.campo !== '1') return false;
-        const slots = getSlotsBetween(b.ora, b.oraFine);
-        return slots.includes(ora);
-      });
-      
-      if (booking) {
-        // Slot occupato
+    if (dayBookings.length === 0) {
+      container.className = 'empty-day';
+      container.innerHTML = `
+        <div class="empty-day-text">Nessuna prenotazione</div>
+        <button class="btn btn-secondary btn-add-booking" onclick="openModalPrenotazione('${dateStr}', '09:00', 1)">
+          <span>+</span>
+          <span>Prenota</span>
+        </button>
+      `;
+    } else {
+      container.className = 'bookings-container';
+      dayBookings.forEach(booking => {
+        const card = document.createElement('div');
+        card.className = 'booking-card';
+        
         const activity = ACTIVITIES.find(a => a.key === booking.attivita);
-        const clienteId = booking.partecipanti[0]?.clienteId;
-        const cliente = clienti.find(c => c.id === clienteId);
-        const nomeCliente = cliente ? `${cliente.nome.charAt(0)}.${cliente.cognome.charAt(0)}.` : '?';
+        const activityLabel = activity ? activity.label : booking.attivita;
         
-        // Verifica se è l'inizio della prenotazione
-        const slots = getSlotsBetween(booking.ora, booking.oraFine);
-        const isInizio = slots[0] === ora;
+        // Prepara info partecipanti
+        let clientiInfo = '';
+        booking.partecipanti.forEach(p => {
+          const cliente = clienti.find(c => c.id === p.clienteId);
+          if (cliente) {
+            clientiInfo += `${cliente.nome} ${cliente.cognome}<br>`;
+          }
+        });
         
-        if (isInizio) {
-          const durata = slots.length;
-          html += `<td rowspan="${durata}">`;
-          html += `<div class="cal-slot occupato" onclick="viewBooking('${booking.id}')">`;
-          html += `<div class="cal-slot-info">${booking.ora}-${booking.oraFine}<br>${nomeCliente}<br>${activity?.label || booking.attivita}</div>`;
-          html += `</div></td>`;
-        }
-        // Se non è l'inizio, il rowspan del td precedente copre questa cella
-      } else {
-        // Slot libero
-        html += `<td><div class="cal-slot libero" onclick="openModalPrenotazione('${dayISO}', '${ora}', 1)"></div></td>`;
-      }
+        card.innerHTML = `
+          <div class="booking-time">${booking.ora} - ${booking.oraFine}</div>
+          <div class="booking-title">${activityLabel}</div>
+          <div class="booking-meta">${clientiInfo}</div>
+          <div class="booking-meta">${booking.partecipanti.length} partecipante${booking.partecipanti.length > 1 ? 'i' : ''}</div>
+          <div class="booking-actions">
+            <button class="btn btn-secondary btn-small" onclick="viewBooking('${booking.id}')">Visualizza</button>
+            <button class="btn btn-secondary btn-small btn-delete" onclick="deleteBooking('${booking.id}')">×</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
     
-    html += '</tr>';
+    dayColumn.appendChild(container);
+    grid.appendChild(dayColumn);
   });
-  
-  html += '</tbody></table>';
-  grid.innerHTML = html;
 }
 
 function prevWeek() {
@@ -1943,6 +2052,21 @@ function prevWeek() {
 function nextWeek() {
   currentWeekStart.setDate(currentWeekStart.getDate() + 7);
   renderCalendar();
+}
+
+function goToToday() {
+  currentWeekStart = getMonday(new Date());
+  renderCalendar();
+}
+
+function deleteBooking(bookingId) {
+  if (!confirm('Sei sicuro di voler eliminare questa prenotazione?')) return;
+  
+  prenotazioni = prenotazioni.filter(b => b.id !== bookingId);
+  saveData();
+  renderCalendar();
+  renderDashboard();
+  toast('🗑️ Prenotazione eliminata');
 }
 
 // ═══════════════════════════════════════════
