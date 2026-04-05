@@ -19,7 +19,7 @@
     }
   ]
 }">
-<title>Padel Village</title>
+<title>Padel Village v2.3</title>
 <style>
   :root {
     --green: #1a7a4a;
@@ -1874,18 +1874,21 @@ function setFilter(filter) {
 function matchesFilter(dayISO, ora) {
   // Controlla se uno slot matcha il filtro attivo
   
-  // Filtro disponibilità
-  const occupato = isSlotOccupato(dayISO, ora, 1);
+  // Filtro disponibilità - controlla se almeno UN campo è occupato in questo orario
+  const occupato = [1, 2, 3, 4].some(campo => isSlotOccupato(dayISO, ora, campo));
   if (activeFilter === 'liberi' && occupato) return false;
   if (activeFilter === 'occupati' && !occupato) return false;
   
   return true;
 }
 
-function getSlotBooking(dayISO, ora, campo) {
+function getSlotBooking(dayISO, ora, campo = null) {
   // Trova la prenotazione che occupa questo slot
+  // Se campo è specificato, cerca solo in quel campo
+  // Altrimenti cerca su tutti i campi (1, 2, 3, 4)
   return prenotazioni.find(b => {
-    if (b.data !== dayISO || b.campo !== campo) return false;
+    if (b.data !== dayISO) return false;
+    if (campo !== null && b.campo !== campo) return false;
     const slots = getSlotsBetween(b.ora, b.oraFine);
     return slots.includes(ora);
   });
@@ -1922,7 +1925,9 @@ function renderCalendar() {
     // Conta slot disponibili per questo giorno
     let slotsDisponibili = 0;
     HOURS.forEach(ora => {
-      if (!isSlotOccupato(dayISO, ora, 1) && matchesFilter(dayISO, ora)) {
+      // Uno slot è disponibile se almeno UN campo è libero E matcha il filtro
+      const almenoUnCampoLibero = [1, 2, 3, 4].some(campo => !isSlotOccupato(dayISO, ora, campo));
+      if (almenoUnCampoLibero && matchesFilter(dayISO, ora)) {
         slotsDisponibili++;
       }
     });
@@ -1955,7 +1960,7 @@ function renderCalendar() {
         continue;
       }
       
-      const booking = getSlotBooking(dayISO, ora, 1);
+      const booking = getSlotBooking(dayISO, ora); // cerca su tutti i campi
       
       if (booking) {
         // SLOT OCCUPATO - crea chip largo per tutta la durata
