@@ -1250,22 +1250,32 @@ function buildConfigUI() {
   
   ACTIVITIES.forEach(act => {
     const t = config.tariffe[act.key];
+    // Calcola Santiago come differenza
+    const santiago = t.costo - t.pv - t.pierangela;
+    
     html += `
       <div style="margin-bottom:20px;">
         <h3 style="font-size:14px;color:var(--green-dark);margin-bottom:10px;text-transform:uppercase;">${act.label}</h3>
         <div class="form-row">
           <div class="form-group">
             <label>Costo cliente</label>
-            <input type="number" step="0.01" id="cfg-${act.key}-costo" value="${t.costo}">
+            <input type="number" step="0.01" id="cfg-${act.key}-costo" value="${t.costo}" oninput="updateSantiago('${act.key}')">
           </div>
           <div class="form-group">
             <label>PV</label>
-            <input type="number" step="0.01" id="cfg-${act.key}-pv" value="${t.pv}">
+            <input type="number" step="0.01" id="cfg-${act.key}-pv" value="${t.pv}" oninput="updateSantiago('${act.key}')">
           </div>
           <div class="form-group">
             <label>Pierangela</label>
-            <input type="number" step="0.01" id="cfg-${act.key}-pierangela" value="${t.pierangela}">
+            <input type="number" step="0.01" id="cfg-${act.key}-pierangela" value="${t.pierangela}" oninput="updateSantiago('${act.key}')">
           </div>
+          <div class="form-group">
+            <label>Santiago (calcolato)</label>
+            <input type="number" step="0.01" id="cfg-${act.key}-santiago" value="${santiago.toFixed(2)}" readonly style="background:var(--green-light);color:var(--green-dark);font-weight:bold;">
+          </div>
+        </div>
+        <div id="cfg-${act.key}-warning" style="display:none;margin-top:8px;padding:8px;background:var(--warning-light);border-left:3px solid var(--warning);font-size:12px;color:var(--warning);border-radius:4px;">
+          ⚠️ La somma PV + Pierangela + Santiago non corrisponde al costo cliente!
         </div>
       </div>
     `;
@@ -1274,13 +1284,47 @@ function buildConfigUI() {
   container.innerHTML = html;
 }
 
+function updateSantiago(activityKey) {
+  const costo = parseFloat(document.getElementById(`cfg-${activityKey}-costo`).value) || 0;
+  const pv = parseFloat(document.getElementById(`cfg-${activityKey}-pv`).value) || 0;
+  const pierangela = parseFloat(document.getElementById(`cfg-${activityKey}-pierangela`).value) || 0;
+  
+  const santiago = costo - pv - pierangela;
+  document.getElementById(`cfg-${activityKey}-santiago`).value = santiago.toFixed(2);
+  
+  // Verifica la somma (con tolleranza per errori di arrotondamento)
+  const somma = pv + pierangela + santiago;
+  const warning = document.getElementById(`cfg-${activityKey}-warning`);
+  
+  if (Math.abs(somma - costo) > 0.01) {
+    warning.style.display = 'block';
+  } else {
+    warning.style.display = 'none';
+  }
+}
+
 function saveConfig() {
+  let valid = true;
+  
   ACTIVITIES.forEach(act => {
     const costo = parseFloat(document.getElementById(`cfg-${act.key}-costo`).value) || 0;
     const pv = parseFloat(document.getElementById(`cfg-${act.key}-pv`).value) || 0;
     const pierangela = parseFloat(document.getElementById(`cfg-${act.key}-pierangela`).value) || 0;
+    const santiago = costo - pv - pierangela;
+    
+    // Verifica validità
+    const somma = pv + pierangela + santiago;
+    if (Math.abs(somma - costo) > 0.01) {
+      valid = false;
+    }
+    
     config.tariffe[act.key] = { costo, pv, pierangela };
   });
+  
+  if (!valid) {
+    toast('⚠️ Alcune configurazioni hanno errori di somma!', true);
+    return;
+  }
   
   saveData();
   toast('✅ Tariffe salvate!');
@@ -1560,6 +1604,12 @@ function savePrenotazione() {
     
     const tariffe = config.tariffe[attivita];
     
+    // FORMULE COMPENSI:
+    // Una tantum: Santiago = Cliente - PV - Pierangela
+    // Pacchetti:  Santiago_Pkt = (Totale/5) - PV_Pkt - Pierangela_Pkt
+    //            dove PV_Pkt e Pierangela_Pkt usano le tariffe standard
+    // Moroso:    tutti i compensi = 0, costo cliente invariato
+    
     let costo = tariffe.costo;
     let pv = tariffe.pv;
     let pierangela = tariffe.pierangela;
@@ -1580,12 +1630,16 @@ function savePrenotazione() {
         return;
       }
       
-      const totalePkt = pkt.costoTotale / 5;
-      costo = totalePkt;
+      // Costo per il cliente per questa lezione
+      const costoPerLezione = pkt.costoTotale / 5;
+      costo = costoPerLezione;
       
-      pv = (totalePkt / 5);
-      pierangela = (totalePkt / 5);
-      santiago = (totalePkt / 5) * 3;
+      // Compensi per pacchetti: formula corretta
+      // PV_Pkt e Pierangela_Pkt usano le tariffe standard
+      pv = tariffe.pv;
+      pierangela = tariffe.pierangela;
+      // Santiago_Pkt = (Totale/5) - PV_Pkt - Pierangela_Pkt
+      santiago = costoPerLezione - pv - pierangela;
       
       pacchettoData = {
         pacchettoId: pktId,
